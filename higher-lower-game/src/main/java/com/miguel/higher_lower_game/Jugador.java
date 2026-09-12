@@ -34,7 +34,7 @@ public class Jugador {
     public int getGolesTemporada(){
         return golesTemporada;
     }    
-    public int getGoles_competicion(){
+    public int getGolesCompeticion(){
         return golesCompeticion;
     }
 
