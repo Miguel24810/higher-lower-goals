@@ -63,7 +63,7 @@ public class UsuarioController {
 
     return usuario;
 }
-    @PostMapping("/ranking")
+    @GetMapping("/ranking")
     public List<Usuario>ranking(){
         return usuarioRepository.findAllByOrderByRecordDesc();
     }

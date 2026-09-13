@@ -10,7 +10,8 @@ import java.util.Date;
 @Component
 public class JwtUtil {
 
-    private final SecretKey clave = Keys.secretKeyFor(io.jsonwebtoken.SignatureAlgorithm.HS256);
+    @SuppressWarnings("deprecation")
+	private final SecretKey clave = Keys.secretKeyFor(io.jsonwebtoken.SignatureAlgorithm.HS256);
     private final long expiracionMs = 1000 * 60 * 60; // 1 hora
 
     public String generarToken(String nombreUsuario) {
