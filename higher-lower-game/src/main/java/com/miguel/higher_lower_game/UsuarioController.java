@@ -2,6 +2,7 @@ package com.miguel.higher_lower_game;
 
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
 import java.util.Map;
 
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -62,5 +63,9 @@ public class UsuarioController {
 
     return usuario;
 }
+    @PostMapping("/ranking")
+    public List<Usuario>ranking(){
+        return usuarioRepository.findAllByOrderByRecordDesc();
+    }
     
 }
