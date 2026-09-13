@@ -4,8 +4,6 @@ import org.springframework.web.bind.annotation.*;
 
 
 import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
 
 
 @RestController
@@ -47,5 +45,21 @@ public class UsuarioController {
 
         return jwtUtil.generarToken(usuario.getNombre());
     }
+    @PostMapping("/record")
+    public Usuario actualizarRecord(@RequestHeader("Authorization") String authHeader, @RequestBody Map<String, Integer> datos) {
+        String token = authHeader.replace("Bearer ", "");
+        String nombreUsuario = jwtUtil.extraerNombreUsuario(token);
+
+        Usuario usuario = usuarioRepository.findByNombre(nombreUsuario);
+
+        int nuevaRacha = datos.get("racha");
+
+        if(nuevaRacha>usuario.getRecord()){
+            usuario.setRecord(nuevaRacha);
+            usuarioRepository.save(usuario);
+        }
+
+    return usuario;
+}
     
 }
