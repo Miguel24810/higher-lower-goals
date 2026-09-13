@@ -2,6 +2,7 @@ package com.miguel.higher_lower_game;
 
 import org.springframework.web.bind.annotation.*;
 
+import java.util.Map;
 
 import org.springframework.security.crypto.password.PasswordEncoder;
 
