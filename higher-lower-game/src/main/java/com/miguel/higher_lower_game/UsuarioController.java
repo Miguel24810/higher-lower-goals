@@ -2,6 +2,7 @@ package com.miguel.higher_lower_game;
 
 import org.springframework.web.bind.annotation.*;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -64,8 +65,16 @@ public class UsuarioController {
     return usuario;
 }
     @GetMapping("/ranking")
-    public List<Usuario>ranking(){
-        return usuarioRepository.findAllByOrderByRecordDesc();
+    public List<UsuarioRankingDTO> ranking() {
+        List<Usuario> usuarios = usuarioRepository.findAllByOrderByRecordDesc();
+        List<UsuarioRankingDTO> resultado = new ArrayList<>();
+
+        for (Usuario u : usuarios) {
+            UsuarioRankingDTO dto = new UsuarioRankingDTO(u.getNombre(),u.getRecord());
+            resultado.add(dto);
     }
+
+    return resultado;
+}
     
 }
