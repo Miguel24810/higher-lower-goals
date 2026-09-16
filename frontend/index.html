@@ -15,6 +15,20 @@
         <button id="btn-registro">Registrarse</button>
         <p id="mensaje-error"></p>
     </div>
+    <div id="pantalla-categoria" style="display: none;">
+    <h2>Elige una categoría</h2>
+    <button class="btn-categoria" data-categoria="golesCarrera">Goles en la carrera</button>
+    <button class="btn-categoria" data-categoria="golesTemporada">Goles esta temporada</button>
+    <button class="btn-categoria" data-categoria="golesCompeticion">Goles en competición</button>
+    </div>
+    <div id="pantalla-juego" style="display: none;">
+    <h2>¿Quién tiene más goles?</h2>
+    <button id="btn-jugador1"></button>
+    <button id="btn-jugador2"></button>
+    <p id="mensaje-resultado"></p>
+    <p id="racha-visual">Racha: 0</p>
+    <p id="record-visual">Récord: 0</p>
+    </div>
 
     <script src="script.js"></script>
 </body>
