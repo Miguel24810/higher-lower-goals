@@ -1,0 +1,369 @@
+/* 1. Variables */
+:root {
+    --bg-void: #050914;
+    --bg-deep: #091426;
+    --surface: rgba(15, 29, 50, 0.62);
+    --surface-strong: rgba(16, 32, 55, 0.9);
+    --line: rgba(180, 215, 255, 0.15);
+    --text: #f5f8ff;
+    --text-muted: #9eacc2;
+    --electric: #37a7ff;
+    --turquoise: #29e3c1;
+    --gold: #ffc758;
+    --success: #42e38b;
+    --danger: #ff5d70;
+    --shadow-xl: 0 30px 80px rgba(0, 0, 0, 0.48);
+    --shadow-glow: 0 0 0 1px rgba(55, 167, 255, 0.25), 0 18px 50px rgba(0, 108, 255, 0.25);
+    --radius-lg: 26px;
+    --radius-md: 16px;
+    --ease-game: cubic-bezier(0.2, 0.8, 0.2, 1);
+}
+
+/* 2. Reset / base */
+* { box-sizing: border-box; }
+
+html { min-height: 100%; background: var(--bg-void); }
+
+body {
+    min-width: 320px;
+    min-height: 100vh;
+    margin: 0;
+    padding: clamp(20px, 5vw, 68px);
+    color: var(--text);
+    font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+    font-weight: 600;
+    letter-spacing: 0.01em;
+    background:
+        radial-gradient(circle at 50% -10%, rgba(40, 155, 255, 0.26), transparent 35rem),
+        radial-gradient(circle at 5% 85%, rgba(41, 227, 193, 0.1), transparent 27rem),
+        linear-gradient(135deg, #050914 0%, #0a1323 48%, #050914 100%);
+    overflow-x: hidden;
+}
+
+body::before,
+body::after {
+    position: fixed;
+    z-index: -1;
+    content: "";
+    pointer-events: none;
+}
+
+body::before {
+    inset: 0;
+    opacity: 0.22;
+    background-image: linear-gradient(rgba(151, 199, 255, 0.08) 1px, transparent 1px), linear-gradient(90deg, rgba(151, 199, 255, 0.08) 1px, transparent 1px);
+    background-size: 54px 54px;
+    mask-image: linear-gradient(to bottom, black, transparent 74%);
+}
+
+body::after {
+    width: min(80vw, 800px);
+    height: min(80vw, 800px);
+    top: 55%;
+    left: 50%;
+    border: 1px solid rgba(87, 190, 255, 0.12);
+    border-radius: 50%;
+    box-shadow: 0 0 0 110px rgba(23, 99, 168, 0.025), 0 0 0 240px rgba(23, 99, 168, 0.018);
+    transform: translate(-50%, -50%);
+}
+
+button, input { font: inherit; }
+button { -webkit-tap-highlight-color: transparent; }
+
+h1, h2, p { margin-top: 0; }
+h1, h2 { text-wrap: balance; }
+
+/* 3. Layout / shared panels */
+#pantalla-login,
+#pantalla-categoria,
+#pantalla-juego {
+    width: min(100%, 1160px);
+    margin: 0 auto;
+    animation: screen-in 620ms var(--ease-game) both;
+}
+
+#pantalla-login,
+#pantalla-categoria {
+    border: 1px solid var(--line);
+    border-radius: var(--radius-lg);
+    background: linear-gradient(145deg, rgba(24, 42, 69, 0.8), rgba(8, 17, 31, 0.72));
+    box-shadow: var(--shadow-xl), inset 0 1px rgba(255, 255, 255, 0.06);
+    backdrop-filter: blur(18px);
+}
+
+/* 4. Header / login */
+#pantalla-login {
+    position: relative;
+    max-width: 520px;
+    margin-top: clamp(4vh, 11vh, 120px);
+    padding: clamp(30px, 6vw, 54px);
+    overflow: hidden;
+}
+
+#pantalla-login::before {
+    position: absolute;
+    top: -120px;
+    right: -80px;
+    width: 260px;
+    height: 260px;
+    content: "";
+    border-radius: 50%;
+    background: radial-gradient(circle, rgba(55, 167, 255, 0.28), transparent 68%);
+}
+
+h1 {
+    position: relative;
+    margin-bottom: 10px;
+    font-size: clamp(2rem, 6vw, 3.5rem);
+    line-height: 0.98;
+    letter-spacing: -0.065em;
+    text-shadow: 0 6px 28px rgba(55, 167, 255, 0.3);
+}
+
+h1::after {
+    display: block;
+    width: 62px;
+    height: 4px;
+    margin-top: 23px;
+    content: "";
+    border-radius: 20px;
+    background: linear-gradient(90deg, var(--turquoise), var(--electric));
+    box-shadow: 0 0 18px var(--electric);
+}
+
+input {
+    display: block;
+    width: 100%;
+    min-height: 56px;
+    margin: 15px 0;
+    padding: 0 18px;
+    color: var(--text);
+    outline: none;
+    border: 1px solid rgba(180, 215, 255, 0.15);
+    border-radius: 12px;
+    background: rgba(4, 10, 20, 0.52);
+    transition: border-color 180ms var(--ease-game), box-shadow 180ms var(--ease-game), background 180ms var(--ease-game);
+}
+
+input::placeholder { color: #718099; }
+input:focus { border-color: var(--electric); background: rgba(7, 21, 41, 0.85); box-shadow: 0 0 0 4px rgba(55, 167, 255, 0.14); }
+
+#btn-login,
+#btn-registro {
+    min-height: 54px;
+    margin-top: 11px;
+}
+
+#btn-login { width: 100%; color: #03111f; border: 0; background: linear-gradient(110deg, var(--turquoise), #63d0ff); }
+#btn-registro { width: 100%; color: var(--text); border: 1px solid var(--line); background: rgba(255, 255, 255, 0.045); }
+
+#mensaje-error { min-height: 1.25em; margin: 18px 0 0; color: var(--danger); font-size: 0.88rem; }
+
+/* 5. Categorías */
+#pantalla-categoria { padding: clamp(28px, 5vw, 58px); text-align: center; }
+
+h2 {
+    margin-bottom: clamp(25px, 4vw, 43px);
+    font-size: clamp(1.55rem, 4vw, 2.5rem);
+    letter-spacing: -0.045em;
+}
+
+.btn-categoria {
+    position: relative;
+    width: calc(33.333% - 12px);
+    min-height: 148px;
+    margin: 5px;
+    padding: 28px 20px 25px;
+    overflow: hidden;
+    color: var(--text);
+    text-align: left;
+    vertical-align: top;
+    border: 1px solid var(--line);
+    border-radius: var(--radius-md);
+    background: linear-gradient(145deg, rgba(33, 58, 92, 0.7), rgba(10, 22, 39, 0.74));
+    box-shadow: inset 0 1px rgba(255, 255, 255, 0.08), 0 12px 26px rgba(0, 0, 0, 0.16);
+}
+
+.btn-categoria::before {
+    display: block;
+    margin-bottom: 15px;
+    color: var(--turquoise);
+    font-size: 0.69rem;
+    font-weight: 800;
+    letter-spacing: 0.16em;
+    content: "MODO DE JUEGO";
+}
+
+.btn-categoria::after {
+    position: absolute;
+    right: -28px;
+    bottom: -55px;
+    width: 130px;
+    height: 130px;
+    content: "";
+    border: 1px solid rgba(115, 204, 255, 0.2);
+    border-radius: 50%;
+    box-shadow: 0 0 0 24px rgba(115, 204, 255, 0.04);
+    transition: transform 350ms var(--ease-game), border-color 350ms var(--ease-game);
+}
+
+.btn-categoria:hover::after { border-color: var(--turquoise); transform: scale(1.22); }
+
+/* 6. Juego */
+#pantalla-juego {
+    position: relative;
+    padding: clamp(12px, 2vw, 28px) 0;
+    text-align: center;
+}
+
+#pantalla-juego h2 { margin-bottom: clamp(20px, 4vw, 42px); }
+
+#pantalla-juego::before {
+    position: absolute;
+    z-index: 2;
+    top: clamp(145px, 20vw, 195px);
+    left: 50%;
+    display: grid;
+    width: clamp(48px, 6vw, 70px);
+    aspect-ratio: 1;
+    place-items: center;
+    color: var(--gold);
+    font-size: clamp(0.9rem, 1.7vw, 1.1rem);
+    font-style: italic;
+    font-weight: 900;
+    content: "VS";
+    border: 1px solid rgba(255, 199, 88, 0.48);
+    border-radius: 50%;
+    background: #0a1424;
+    box-shadow: 0 0 0 7px rgba(5, 9, 20, 0.84), 0 0 28px rgba(255, 181, 48, 0.28);
+    transform: translateX(-50%);
+    animation: vs-pulse 2.8s ease-in-out infinite;
+}
+
+/* 7. Player cards */
+#btn-jugador1,
+#btn-jugador2 {
+    position: relative;
+    width: calc(50% - clamp(16px, 2.5vw, 30px));
+    min-height: clamp(250px, 33vw, 390px);
+    padding: clamp(28px, 4vw, 50px) clamp(18px, 4vw, 48px) 32px;
+    overflow: hidden;
+    color: var(--text);
+    font-size: clamp(1.35rem, 3.2vw, 2.65rem);
+    font-weight: 850;
+    letter-spacing: -0.055em;
+    text-align: left;
+    vertical-align: top;
+    text-shadow: 0 3px 12px #030811;
+    border: 1px solid rgba(200, 226, 255, 0.24);
+    border-radius: var(--radius-lg);
+    background-color: #102445;
+    background-image: linear-gradient(180deg, rgba(9, 22, 43, 0.08) 12%, rgba(4, 10, 22, 0.96) 100%), radial-gradient(circle at 25% 15%, rgba(78, 185, 255, 0.9), transparent 27%), linear-gradient(130deg, #163c73, #0b172a 66%);
+    box-shadow: var(--shadow-xl), inset 0 1px rgba(255, 255, 255, 0.14);
+    transition: transform 300ms var(--ease-game), box-shadow 300ms var(--ease-game), border-color 300ms var(--ease-game), filter 300ms var(--ease-game);
+    animation: card-in 570ms var(--ease-game) both;
+}
+
+#btn-jugador2 {
+    background-image: linear-gradient(180deg, rgba(9, 22, 43, 0.08) 12%, rgba(4, 10, 22, 0.96) 100%), radial-gradient(circle at 75% 12%, rgba(50, 230, 187, 0.84), transparent 29%), linear-gradient(230deg, #116155, #0b172a 66%);
+    animation-delay: 90ms;
+}
+
+#btn-jugador1::before,
+#btn-jugador2::before {
+    position: absolute;
+    top: 23px;
+    left: clamp(18px, 4vw, 48px);
+    color: rgba(245, 248, 255, 0.72);
+    font-size: 0.67rem;
+    font-weight: 800;
+    letter-spacing: 0.17em;
+    content: "ELIGE AL JUGADOR";
+}
+
+#btn-jugador1::after,
+#btn-jugador2::after {
+    position: absolute;
+    right: -3%;
+    bottom: -25%;
+    width: 55%;
+    aspect-ratio: 1;
+    content: "";
+    opacity: 0.64;
+    border: clamp(8px, 1.2vw, 15px) solid rgba(255, 255, 255, 0.13);
+    border-radius: 50%;
+    box-shadow: 0 0 0 22px rgba(255, 255, 255, 0.035);
+    transform: rotate(-17deg);
+}
+
+#btn-jugador1:hover,
+#btn-jugador2:hover { z-index: 1; border-color: rgba(118, 216, 255, 0.78); box-shadow: var(--shadow-glow), inset 0 1px rgba(255, 255, 255, 0.24); filter: brightness(1.12) saturate(1.1); transform: translateY(-8px) scale(1.012); }
+#btn-jugador2:hover { box-shadow: 0 0 0 1px rgba(41, 227, 193, 0.3), 0 18px 50px rgba(10, 211, 163, 0.21), inset 0 1px rgba(255, 255, 255, 0.24); }
+
+/* 8. Result / score */
+#mensaje-resultado {
+    min-height: 1.5em;
+    margin: clamp(25px, 4vw, 38px) 0 12px;
+    color: var(--gold);
+    font-size: clamp(1rem, 2vw, 1.2rem);
+    font-weight: 800;
+    letter-spacing: 0.02em;
+}
+
+#mensaje-resultado:not(:empty) { animation: result-in 360ms var(--ease-game); }
+
+#racha-visual,
+#record-visual {
+    display: inline-flex;
+    min-width: 138px;
+    min-height: 40px;
+    align-items: center;
+    justify-content: center;
+    margin: 3px;
+    padding: 8px 14px;
+    color: var(--text-muted);
+    font-size: 0.78rem;
+    font-weight: 750;
+    letter-spacing: 0.05em;
+    border: 1px solid var(--line);
+    border-radius: 999px;
+    background: rgba(8, 18, 33, 0.7);
+    box-shadow: inset 0 1px rgba(255, 255, 255, 0.04);
+}
+
+#record-visual { color: #ffe0a0; border-color: rgba(255, 199, 88, 0.25); }
+
+/* 9. Buttons */
+button { cursor: pointer; transition: transform 180ms var(--ease-game), box-shadow 180ms var(--ease-game), border-color 180ms var(--ease-game), background 180ms var(--ease-game); }
+button:hover { transform: translateY(-3px); }
+button:active { transform: translateY(0) scale(0.98); transition-duration: 80ms; }
+
+/* 10. States / result feedback */
+#mensaje-resultado:not(:empty) { text-shadow: 0 0 18px rgba(255, 199, 88, 0.24); }
+
+/* 11. Animations */
+@keyframes screen-in { from { opacity: 0; transform: translateY(18px) scale(0.985); } to { opacity: 1; transform: translateY(0) scale(1); } }
+@keyframes card-in { from { opacity: 0; transform: translateY(24px) scale(0.96); } to { opacity: 1; transform: translateY(0) scale(1); } }
+@keyframes result-in { 0% { opacity: 0; transform: translateY(9px); } 65% { transform: translateY(-2px); } 100% { opacity: 1; transform: translateY(0); } }
+@keyframes vs-pulse { 0%, 100% { box-shadow: 0 0 0 7px rgba(5, 9, 20, 0.84), 0 0 22px rgba(255, 181, 48, 0.22); } 50% { box-shadow: 0 0 0 9px rgba(5, 9, 20, 0.84), 0 0 36px rgba(255, 181, 48, 0.43); } }
+
+/* 12. Responsive */
+@media (max-width: 700px) {
+    body { padding: 18px 14px 35px; }
+    .btn-categoria { width: 100%; min-height: 105px; margin: 6px 0; }
+    #pantalla-juego h2 { margin-bottom: 24px; }
+    /* En la composición vertical no hay un hueco central: evitamos superponer el VS sobre una tarjeta. */
+    #pantalla-juego::before { display: none; }
+    #btn-jugador1, #btn-jugador2 { display: block; width: 100%; min-height: 205px; margin: 12px 0; }
+    #btn-jugador2 { background-image: linear-gradient(180deg, rgba(9, 22, 43, 0.08) 12%, rgba(4, 10, 22, 0.96) 100%), radial-gradient(circle at 75% 12%, rgba(50, 230, 187, 0.84), transparent 29%), linear-gradient(230deg, #116155, #0b172a 66%); }
+    #mensaje-resultado { margin-top: 24px; }
+}
+
+@media (min-width: 701px) and (max-width: 940px) { .btn-categoria { width: calc(50% - 12px); } .btn-categoria:last-child { width: calc(100% - 12px); min-height: 110px; } }
+
+/* 13. Accessibility */
+:focus-visible { outline: 3px solid var(--gold); outline-offset: 4px; }
+
+@media (prefers-reduced-motion: reduce) {
+    *, *::before, *::after { scroll-behavior: auto !important; animation-duration: 1ms !important; animation-iteration-count: 1 !important; transition-duration: 1ms !important; }
+}

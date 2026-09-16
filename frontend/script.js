@@ -3,10 +3,7 @@ let categoriaElegida = '';
 let jugadorActual1 = null;
 let jugadorActual2 = null;
 
-document.getElementById('btn-login').addEventListener('click', function() {
-    const nombre = document.getElementById('input-nombre').value;
-    const password = document.getElementById('input-password').value;
-
+function iniciarSesion(nombre, password) {
     fetch('http://localhost:8081/usuarios/login', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
@@ -23,6 +20,34 @@ document.getElementById('btn-login').addEventListener('click', function() {
         document.getElementById('pantalla-login').style.display = 'none';
         document.getElementById('pantalla-categoria').style.display = 'block';
         console.log('Login correcto, token:', token);
+    })
+    .catch(error => {
+        document.getElementById('mensaje-error').textContent = error.message;
+    });
+}
+
+document.getElementById('btn-login').addEventListener('click', function() {
+    const nombre = document.getElementById('input-nombre').value;
+    const password = document.getElementById('input-password').value;
+    iniciarSesion(nombre, password);
+});
+document.getElementById('btn-registro').addEventListener('click', function() {
+    const nombre = document.getElementById('input-nombre').value;
+    const password = document.getElementById('input-password').value;
+
+    fetch('http://localhost:8081/usuarios/registro', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ nombre: nombre, password: password })
+    })
+    .then(response => {
+        if (!response.ok) {
+            throw new Error('No se pudo registrar (¿el usuario ya existe?)');
+        }
+        return response.json();
+    })
+    .then(usuarioCreado => {
+        iniciarSesion(nombre, password);
     })
     .catch(error => {
         document.getElementById('mensaje-error').textContent = error.message;
