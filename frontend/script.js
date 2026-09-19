@@ -18,6 +18,7 @@ function iniciarSesion(nombre, password) {
     .then(token => {
         localStorage.setItem('token', token);
         document.getElementById('pantalla-login').style.display = 'none';
+        document.getElementById('pantalla-registro').style.display = 'none';
         document.getElementById('pantalla-categoria').style.display = 'block';
         console.log('Login correcto, token:', token);
     })
@@ -25,15 +26,28 @@ function iniciarSesion(nombre, password) {
         document.getElementById('mensaje-error').textContent = error.message;
     });
 }
-
+document.getElementById('link-ir-login').addEventListener('click', function() {
+    document.getElementById('pantalla-registro').style.display = 'none';
+    document.getElementById('pantalla-login').style.display = 'block';
+});
 document.getElementById('btn-login').addEventListener('click', function() {
-    const nombre = document.getElementById('input-nombre').value;
-    const password = document.getElementById('input-password').value;
+    const nombre = document.getElementById('login-nombre').value;
+    const password = document.getElementById('login-password').value;
     iniciarSesion(nombre, password);
 });
+document.getElementById('link-ir-registro').addEventListener('click', function() {
+    document.getElementById('pantalla-login').style.display = 'none';
+    document.getElementById('pantalla-registro').style.display = 'block';
+});
 document.getElementById('btn-registro').addEventListener('click', function() {
-    const nombre = document.getElementById('input-nombre').value;
-    const password = document.getElementById('input-password').value;
+    const nombre = document.getElementById('registro-nombre').value;
+    const password = document.getElementById('registro-password').value;
+    const passwordConfirmar= document.getElementById('registro-password-confirmar').value;
+
+    if(password !== passwordConfirmar){
+        document.getElementById('mensaje-error-registro').textContent = 'Las contraseñas no coinciden';
+        return;
+    }
 
     fetch('http://localhost:8081/usuarios/registro', {
         method: 'POST',
@@ -50,7 +64,7 @@ document.getElementById('btn-registro').addEventListener('click', function() {
         iniciarSesion(nombre, password);
     })
     .catch(error => {
-        document.getElementById('mensaje-error').textContent = error.message;
+        document.getElementById('mensaje-error-registro').textContent = error.message;
     });
 });
 
@@ -62,6 +76,18 @@ document.querySelectorAll('.btn-categoria').forEach(function(boton) {
         document.getElementById('pantalla-categoria').style.display = 'none';
         document.getElementById('pantalla-juego').style.display = 'block';
     });
+});
+document.getElementById('btn-volver-categoria').addEventListener('click', function() {
+    document.getElementById('pantalla-juego').style.display = 'none';
+    document.getElementById('pantalla-categoria').style.display = 'block';
+    
+});
+document.getElementById('btn-volver-login').addEventListener('click', function() {
+    document.getElementById('pantalla-categoria').style.display = 'none';
+    document.getElementById('pantalla-login').style.display = 'block';
+    localStorage.removeItem('token')
+    
+    
 });
 
 document.getElementById('btn-jugador1').addEventListener('click', function() {
@@ -175,4 +201,23 @@ function consultarRecord() {
     .then(usuario => {
         actualizarRecordVisual(usuario);
     });
+
 }
+const videoFondo = document.getElementById('video-fondo');
+
+videoFondo.addEventListener('timeupdate', function() {
+    const tiempoRestante = videoFondo.duration - videoFondo.currentTime;
+
+    if (tiempoRestante <= 0.5) {
+        videoFondo.classList.add('fade-video');
+    }
+});
+
+videoFondo.addEventListener('ended', function() {
+    videoFondo.currentTime = 0;
+    videoFondo.play();
+
+    setTimeout(function() {
+        videoFondo.classList.remove('fade-video');
+    }, 100);
+});

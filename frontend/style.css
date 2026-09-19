@@ -1,3 +1,64 @@
+/* =========================================
+   VIDEO DE FONDO
+========================================= */
+
+#video-fondo {
+    position: fixed;
+
+    top: 0;
+    left: 0;
+
+    width: 100vw;
+    height: 100vh;
+
+    object-fit: cover;
+
+    z-index: 0;
+
+    pointer-events: none;
+
+    transition:opacity 0.5s ease;
+
+    
+}
+#video-fondo.fade-video {
+    opacity: 0;
+}
+
+/* Oscurece el vídeo */
+
+body::before {
+    content: "";
+
+    position: fixed;
+
+    top: 0;
+    left: 0;
+
+    width: 100%;
+    height: 100%;
+
+    background: rgba(5, 9, 20, 0.65);
+
+    z-index: 1;
+
+    pointer-events: none;
+}
+
+/* Todo el juego queda por encima del vídeo */
+
+#contenido {
+    position: relative;
+
+    z-index: 2;
+
+    min-height: 100vh;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
 /* 1. Variables */
 :root {
     --bg-void: #050914;
@@ -43,7 +104,6 @@ body {
 body::before,
 body::after {
     position: fixed;
-    z-index: -1;
     content: "";
     pointer-events: none;
 }
@@ -76,14 +136,17 @@ h1, h2 { text-wrap: balance; }
 /* 3. Layout / shared panels */
 #pantalla-login,
 #pantalla-categoria,
-#pantalla-juego {
+#pantalla-juego,
+#pantalla-registro{
     width: min(100%, 1160px);
     margin: 0 auto;
     animation: screen-in 620ms var(--ease-game) both;
 }
 
 #pantalla-login,
-#pantalla-categoria {
+#pantalla-categoria,
+#pantalla-registro
+{
     border: 1px solid var(--line);
     border-radius: var(--radius-lg);
     background: linear-gradient(145deg, rgba(24, 42, 69, 0.8), rgba(8, 17, 31, 0.72));
@@ -91,16 +154,19 @@ h1, h2 { text-wrap: balance; }
     backdrop-filter: blur(18px);
 }
 
+
 /* 4. Header / login */
-#pantalla-login {
+#pantalla-login,
+#pantalla-registro {
     position: relative;
-    max-width: 520px;
+    max-width: 700px;
     margin-top: clamp(4vh, 11vh, 120px);
     padding: clamp(30px, 6vw, 54px);
     overflow: hidden;
 }
 
-#pantalla-login::before {
+#pantalla-login::before,
+#pantalla-registro::before {
     position: absolute;
     top: -120px;
     right: -80px;
@@ -155,7 +221,7 @@ input:focus { border-color: var(--electric); background: rgba(7, 21, 41, 0.85); 
 }
 
 #btn-login { width: 100%; color: #03111f; border: 0; background: linear-gradient(110deg, var(--turquoise), #63d0ff); }
-#btn-registro { width: 100%; color: var(--text); border: 1px solid var(--line); background: rgba(255, 255, 255, 0.045); }
+#btn-registro { width: 100%; color: #03111f; border: 0; background: linear-gradient(110deg, var(--turquoise), #63d0ff); }
 
 #mensaje-error { min-height: 1.25em; margin: 18px 0 0; color: var(--danger); font-size: 0.88rem; }
 
@@ -366,4 +432,97 @@ button:active { transform: translateY(0) scale(0.98); transition-duration: 80ms;
 
 @media (prefers-reduced-motion: reduce) {
     *, *::before, *::after { scroll-behavior: auto !important; animation-duration: 1ms !important; animation-iteration-count: 1 !important; transition-duration: 1ms !important; }
+}
+
+#btn-volver-login
+{
+    /* Posicionamiento y alineación */
+    position: absolute;
+    top: 20px;
+    left: 20px;
+    /* Posicionamiento y alineación */
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    
+    /* Colores alineados con tu interfaz */
+    background-color: rgba(20, 30, 45, 0.6); /* Fondo oscuro semitransparente */
+    color: #a0aec0; /* Texto gris claro, no blanco puro para que no compita con el título */
+    
+    /* Bordes y Estructura */
+    border: 1px solid rgba(255, 255, 255, 0.1); /* Borde sutil */
+    border-radius: 8px; /* Esquinas suavizadas idénticas a tus tarjetas */
+    padding: 8px 16px;
+    
+    /* Tipografía y cursor */
+    font-family: sans-serif; /* Usa la misma fuente de tu proyecto */
+    font-size: 14px;
+    font-weight: 500;
+    cursor: pointer;
+    
+    /* Transición fluida para los efectos */
+    transition: all 0.3s ease;
+    }
+
+    /* Efecto al pasar el cursor (Hover) */
+    #btn-volver-login {
+    background-color: rgba(20, 30, 45, 0.9); /* Se vuelve más sólido */
+    color: #00f3b9; /* Cambia al color turquesa/verde neón de tu texto "MODO DE JUEGO" */
+    border-color: rgba(0, 243, 185, 0.4); /* El borde también se ilumina sutilmente */
+    
+    /* Sombra de brillo (Glow) tipo gaming */
+    box-shadow: 0 0 15px rgba(0, 243, 185, 0.2); 
+    
+    /* Pequeño movimiento reactivo hacia la izquierda */
+    transform: translateX(-3px); 
+    }
+
+    /* Efecto al hacer clic (Active) */
+    #btn-volver-login {
+    transform: translateX(-1px) scale(0.98); /* Se encoge un poco al pulsar */
+}
+#btn-volver-categoria{
+    position: absolute;
+    bottom: 40px;
+    left: 60px;
+    /* Posicionamiento y alineación */
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    
+    /* Colores alineados con tu interfaz */
+    background-color: rgba(20, 30, 45, 0.6); /* Fondo oscuro semitransparente */
+    color: #a0aec0; /* Texto gris claro, no blanco puro para que no compita con el título */
+    
+    /* Bordes y Estructura */
+    border: 1px solid rgba(255, 255, 255, 0.1); /* Borde sutil */
+    border-radius: 8px; /* Esquinas suavizadas idénticas a tus tarjetas */
+    padding: 8px 16px;
+    
+    /* Tipografía y cursor */
+    font-family: sans-serif; /* Usa la misma fuente de tu proyecto */
+    font-size: 14px;
+    font-weight: 500;
+    cursor: pointer;
+    
+    /* Transición fluida para los efectos */
+    transition: all 0.3s ease;
+    }
+
+    /* Efecto al pasar el cursor (Hover) */
+    #btn-volver-categoria {
+    background-color: rgba(20, 30, 45, 0.9); /* Se vuelve más sólido */
+    color: #00f3b9; /* Cambia al color turquesa/verde neón de tu texto "MODO DE JUEGO" */
+    border-color: rgba(0, 243, 185, 0.4); /* El borde también se ilumina sutilmente */
+    
+    /* Sombra de brillo (Glow) tipo gaming */
+    box-shadow: 0 0 15px rgba(0, 243, 185, 0.2); 
+    
+    /* Pequeño movimiento reactivo hacia la izquierda */
+    transform: translateX(-3px); 
+    }
+
+    /* Efecto al hacer clic (Active) */
+    #btn-volver-categoria {
+    transform: translateX(-1px) scale(0.98); /* Se encoge un poco al pulsar */
 }

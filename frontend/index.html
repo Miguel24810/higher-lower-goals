@@ -6,17 +6,38 @@
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
+    <video id="video-fondo" autoplay muted playsinline>
+        <source src="videos/videofutbol.mp4" type="video/mp4">
+        Tu navegador no soporta videos HTML5.
+    </video>
 
-    <div id="pantalla-login">
-        <h1>Higher or Lower ⚽</h1>
-        <input type="text" id="input-nombre" placeholder="Nombre de usuario">
-        <input type="password" id="input-password" placeholder="Contraseña">
+    <div id="contenido">
+        <div id="pantalla-login">
+        <h1>WHO HAS MORE? ⚽</h1>
+        <input type="text" id="login-nombre" placeholder="Nombre de usuario">
+        <input type="password" id="login-password" placeholder="Contraseña">
         <button id="btn-login">Iniciar sesión</button>
-        <button id="btn-registro">Registrarse</button>
+        <p><a href="#" id="link-ir-registro">¿No tienes cuenta? Regístrate</a></p>
         <p id="mensaje-error"></p>
     </div>
+
+    <div id="pantalla-registro" style="display: none;">
+        <h1>Crear cuenta</h1>
+        <input type="text" id="registro-nombre" placeholder="Nombre de usuario">
+        <input type="password" id="registro-password" placeholder="Contraseña">
+        <input type="password" id="registro-password-confirmar" placeholder="Confirmar contraseña">
+        <button id="btn-registro">Registrarse</button>
+        <p><a href="#" id="link-ir-login">¿Ya tienes cuenta? Inicia sesión</a></p>
+        <p id="mensaje-error-registro"></p>
+    </div>
     <div id="pantalla-categoria" style="display: none;">
+
     <h2>Elige una categoría</h2>
+    
+
+    
+    <button id="btn-volver-login">← Volver</button>
+    
     <button class="btn-categoria" data-categoria="golesCarrera">Goles en la carrera</button>
     <button class="btn-categoria" data-categoria="golesTemporada">Goles esta temporada</button>
     <button class="btn-categoria" data-categoria="golesCompeticion">Goles en competición</button>
@@ -28,6 +49,9 @@
     <p id="mensaje-resultado"></p>
     <p id="racha-visual">Racha: 0</p>
     <p id="record-visual">Récord: 0</p>
+    <button id="btn-volver-categoria">← Cambiar categoría</button>
+    </div>
+
     </div>
 
     <script src="script.js"></script>
