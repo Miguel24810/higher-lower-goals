@@ -2,6 +2,20 @@
 let categoriaElegida = '';
 let jugadorActual1 = null;
 let jugadorActual2 = null;
+let usuariosRanking = [];
+let indiceCategoriaRanking = 0;
+
+const categoriasRanking = [
+    { id: 'golesCarrera', nombre: 'Goles en la carrera', record: 'recordCarrera' },
+    { id: 'golesTemporada', nombre: 'Goles esta temporada', record: 'recordTemporada' },
+    { id: 'golesSeleccion', nombre: 'Goles en Selección', record: 'recordSeleccion' }
+];
+
+function limpiarEstadoJuego() {
+    rachaActual = 0;
+    document.getElementById('mensaje-resultado').textContent = '';
+    document.getElementById('racha-visual').textContent = 'Racha: 0';
+}
 
 function iniciarSesion(nombre, password) {
     fetch('http://localhost:8081/usuarios/login', {
@@ -26,7 +40,8 @@ function iniciarSesion(nombre, password) {
         document.getElementById('mensaje-error').textContent = error.message;
     });
 }
-document.getElementById('link-ir-login').addEventListener('click', function() {
+document.getElementById('link-ir-login').addEventListener('click', function(event) {
+    event.preventDefault();
     document.getElementById('pantalla-registro').style.display = 'none';
     document.getElementById('pantalla-login').style.display = 'block';
 });
@@ -35,7 +50,8 @@ document.getElementById('btn-login').addEventListener('click', function() {
     const password = document.getElementById('login-password').value;
     iniciarSesion(nombre, password);
 });
-document.getElementById('link-ir-registro').addEventListener('click', function() {
+document.getElementById('link-ir-registro').addEventListener('click', function(event) {
+    event.preventDefault();
     document.getElementById('pantalla-login').style.display = 'none';
     document.getElementById('pantalla-registro').style.display = 'block';
 });
@@ -70,6 +86,7 @@ document.getElementById('btn-registro').addEventListener('click', function() {
 
 document.querySelectorAll('.btn-categoria').forEach(function(boton) {
     boton.addEventListener('click', function() {
+        limpiarEstadoJuego();
         categoriaElegida = boton.dataset.categoria;
         pedirNuevoPar();
         consultarRecord();
@@ -78,11 +95,13 @@ document.querySelectorAll('.btn-categoria').forEach(function(boton) {
     });
 });
 document.getElementById('btn-volver-categoria').addEventListener('click', function() {
+    limpiarEstadoJuego();
     document.getElementById('pantalla-juego').style.display = 'none';
     document.getElementById('pantalla-categoria').style.display = 'block';
     
 });
 document.getElementById('btn-volver-login').addEventListener('click', function() {
+    limpiarEstadoJuego();
     document.getElementById('pantalla-categoria').style.display = 'none';
     document.getElementById('pantalla-login').style.display = 'block';
     localStorage.removeItem('token')
@@ -106,24 +125,11 @@ document.getElementById('btn-jugador1').addEventListener('click', function() {
             rachaActual++;
             document.getElementById('mensaje-resultado').textContent = '¡Acertaste!';
             document.getElementById('racha-visual').textContent = 'Racha: ' + rachaActual;
+            guardarRecord();
             pedirNuevoPar();
         } else {
             document.getElementById('mensaje-resultado').textContent = 'Fallaste. Tu racha era: ' + rachaActual;
-
-            const token = localStorage.getItem('token');
-            fetch('http://localhost:8081/usuarios/record', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                    'Authorization': 'Bearer ' + token
-                },
-                body: JSON.stringify({ racha: rachaActual })
-            })
-            .then(response => response.json())
-            .then(usuario => {
-                actualizarRecordVisual(usuario);
-            });
-
+            guardarRecord();
             rachaActual = 0;
             document.getElementById('racha-visual').textContent = 'Racha: 0';
             pedirNuevoPar();
@@ -147,24 +153,11 @@ document.getElementById('btn-jugador2').addEventListener('click', function() {
             rachaActual++;
             document.getElementById('mensaje-resultado').textContent = '¡Acertaste!';
             document.getElementById('racha-visual').textContent = 'Racha: ' + rachaActual;
+            guardarRecord();
             pedirNuevoPar();
         } else {
             document.getElementById('mensaje-resultado').textContent = 'Fallaste. Tu racha era: ' + rachaActual;
-
-            const token = localStorage.getItem('token');
-            fetch('http://localhost:8081/usuarios/record', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                    'Authorization': 'Bearer ' + token
-                },
-                body: JSON.stringify({ racha: rachaActual })
-            })
-            .then(response => response.json())
-            .then(usuario => {
-                actualizarRecordVisual(usuario);
-            });
-
+            guardarRecord();
             rachaActual = 0;
             document.getElementById('racha-visual').textContent = 'Racha: 0';
             pedirNuevoPar();
@@ -183,8 +176,29 @@ function pedirNuevoPar() {
         });
 }
 
+function obtenerRecordCategoria(usuario) {
+    const categoria = categoriasRanking.find(item => item.id === categoriaElegida);
+    return categoria ? usuario[categoria.record] : 0;
+}
+
 function actualizarRecordVisual(usuario) {
-    document.getElementById('record-visual').textContent = 'Récord: ' + usuario.record;
+    document.getElementById('record-visual').textContent = 'Récord: ' + obtenerRecordCategoria(usuario);
+}
+
+function guardarRecord() {
+    const token = localStorage.getItem('token');
+    fetch('http://localhost:8081/usuarios/record', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+            'Authorization': 'Bearer ' + token
+        },
+        body: JSON.stringify({ racha: rachaActual, categoria: categoriaElegida })
+    })
+    .then(response => response.json())
+    .then(usuario => {
+        actualizarRecordVisual(usuario);
+    });
 }
 
 function consultarRecord() {
@@ -195,7 +209,7 @@ function consultarRecord() {
             'Content-Type': 'application/json',
             'Authorization': 'Bearer ' + token
         },
-        body: JSON.stringify({ racha: 0 })
+        body: JSON.stringify({ racha: 0, categoria: categoriaElegida })
     })
     .then(response => response.json())
     .then(usuario => {
@@ -221,3 +235,45 @@ videoFondo.addEventListener('ended', function() {
         videoFondo.classList.remove('fade-video');
     }, 100);
 });
+
+document.getElementById('btn-ver-ranking').addEventListener('click', function() {
+    fetch('http://localhost:8081/usuarios/ranking')
+        .then(response => response.json())
+        .then(usuarios => {
+            usuariosRanking = usuarios;
+            indiceCategoriaRanking = Math.max(0, categoriasRanking.findIndex(item => item.id === categoriaElegida));
+            renderizarRanking();
+            document.getElementById('pantalla-categoria').style.display = 'none';
+            document.getElementById('pantalla-ranking').style.display = 'block';
+        });
+});
+
+function renderizarRanking() {
+    const categoria = categoriasRanking[indiceCategoriaRanking];
+    const lista = document.getElementById('lista-ranking');
+    lista.innerHTML = '';
+    document.getElementById('ranking-categoria').textContent = categoria.nombre;
+
+    usuariosRanking
+        .slice()
+        .sort((usuarioA, usuarioB) => usuarioB[categoria.record] - usuarioA[categoria.record])
+        .forEach(function(usuario) {
+            const item = document.createElement('li');
+            item.textContent = usuario.nombre + ' - Récord: ' + usuario[categoria.record];
+            lista.appendChild(item);
+        });
+}
+
+document.getElementById('btn-ranking-anterior').addEventListener('click', function() {
+    indiceCategoriaRanking = (indiceCategoriaRanking - 1 + categoriasRanking.length) % categoriasRanking.length;
+    renderizarRanking();
+});
+
+document.getElementById('btn-ranking-siguiente').addEventListener('click', function() {
+    indiceCategoriaRanking = (indiceCategoriaRanking + 1) % categoriasRanking.length;
+    renderizarRanking();
+});
+    document.getElementById('btn-volver-ranking').addEventListener('click', function() {
+        document.getElementById('pantalla-ranking').style.display = 'none';
+        document.getElementById('pantalla-categoria').style.display = 'block';
+    });

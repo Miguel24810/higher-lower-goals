@@ -16,8 +16,22 @@ public class Jugador {
     private int golesTemporada;
     private int golesCarrera;
     private int golesSeleccion;
+    private Integer idApiFootball;
+    private String urlFoto;
 
 
+    public Integer getIdApiFootball() {
+        return idApiFootball;
+    }
+    public void setIdApiFootball(Integer idApiFootball) {
+        this.idApiFootball = idApiFootball;
+    }
+    public String getUrlFoto() {
+        return urlFoto;
+    }
+    public void setUrlFoto(String urlFoto) {
+        this.urlFoto = urlFoto;
+    }
     public Long getId(){
         return id;
     }

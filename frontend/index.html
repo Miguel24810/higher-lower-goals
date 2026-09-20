@@ -13,47 +13,56 @@
 
     <div id="contenido">
         <div id="pantalla-login">
-        <h1>WHO HAS MORE? ⚽</h1>
-        <input type="text" id="login-nombre" placeholder="Nombre de usuario">
-        <input type="password" id="login-password" placeholder="Contraseña">
-        <button id="btn-login">Iniciar sesión</button>
-        <p><a href="#" id="link-ir-registro">¿No tienes cuenta? Regístrate</a></p>
-        <p id="mensaje-error"></p>
-    </div>
+            <h1>WHO HAS MORE? ⚽</h1>
+            <input type="text" id="login-nombre" placeholder="Nombre de usuario">
+            <input type="password" id="login-password" placeholder="Contraseña">
+            <button id="btn-login">Iniciar sesión</button>
+            <p><a href="#" id="link-ir-registro">¿No tienes cuenta? Regístrate</a></p>
+            <p id="mensaje-error"></p>
+        </div>
 
-    <div id="pantalla-registro" style="display: none;">
-        <h1>Crear cuenta</h1>
-        <input type="text" id="registro-nombre" placeholder="Nombre de usuario">
-        <input type="password" id="registro-password" placeholder="Contraseña">
-        <input type="password" id="registro-password-confirmar" placeholder="Confirmar contraseña">
-        <button id="btn-registro">Registrarse</button>
-        <p><a href="#" id="link-ir-login">¿Ya tienes cuenta? Inicia sesión</a></p>
-        <p id="mensaje-error-registro"></p>
-    </div>
-    <div id="pantalla-categoria" style="display: none;">
+        <div id="pantalla-registro" style="display: none;">
+            <h1>Crear cuenta</h1>
+            <input type="text" id="registro-nombre" placeholder="Nombre de usuario">
+            <input type="password" id="registro-password" placeholder="Contraseña">
+            <input type="password" id="registro-password-confirmar" placeholder="Confirmar contraseña">
+            <button id="btn-registro">Registrarse</button>
+            <p><a href="#" id="link-ir-login">¿Ya tienes cuenta? Inicia sesión</a></p>
+            <p id="mensaje-error-registro"></p>
+        </div>
 
-    <h2>Elige una categoría</h2>
-    
+        <div id="pantalla-categoria" style="display: none;">
+            <h2>Elige una categoría</h2>
+            <button id="btn-ver-ranking">Ver ranking</button>
+            <button id="btn-volver-login">← Volver</button>
+            <button class="btn-categoria" data-categoria="golesCarrera">Goles en la carrera</button>
+            <button class="btn-categoria" data-categoria="golesTemporada">Goles esta temporada</button>
+            <button class="btn-categoria" data-categoria="golesSeleccion">Goles en Selección</button>
+        </div>
 
-    
-    <button id="btn-volver-login">← Volver</button>
-    
-    <button class="btn-categoria" data-categoria="golesCarrera">Goles en la carrera</button>
-    <button class="btn-categoria" data-categoria="golesTemporada">Goles esta temporada</button>
-    <button class="btn-categoria" data-categoria="golesCompeticion">Goles en competición</button>
-    </div>
-    <div id="pantalla-juego" style="display: none;">
-    <h2>¿Quién tiene más goles?</h2>
-    <button id="btn-jugador1"></button>
-    <button id="btn-jugador2"></button>
-    <p id="mensaje-resultado"></p>
-    <p id="racha-visual">Racha: 0</p>
-    <p id="record-visual">Récord: 0</p>
-    <button id="btn-volver-categoria">← Cambiar categoría</button>
-    </div>
+        <div id="pantalla-ranking" style="display: none;">
+            <h2>Ranking</h2>
+            <div id="ranking-controles">
+                <button id="btn-ranking-anterior" type="button" aria-label="Categoría anterior">←</button>
+                <strong id="ranking-categoria"></strong>
+                <button id="btn-ranking-siguiente" type="button" aria-label="Categoría siguiente">→</button>
+            </div>
+            <ul id="lista-ranking"></ul>
+            <button id="btn-volver-ranking">← Volver</button>
+        </div>
 
+        <div id="pantalla-juego" style="display: none;">
+            <h2>¿Quién tiene más goles?</h2>
+            <button id="btn-jugador1"></button>
+            <button id="btn-jugador2"></button>
+            <p id="mensaje-resultado"></p>
+            <p id="racha-visual">Racha: 0</p>
+            <p id="record-visual">Récord: 0</p>
+            <button id="btn-volver-categoria">← Cambiar categoría</button>
+        </div>
     </div>
 
     <script src="script.js"></script>
 </body>
+</html>
 </html>
