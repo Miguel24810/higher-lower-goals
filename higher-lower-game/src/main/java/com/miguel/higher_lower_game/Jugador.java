@@ -15,7 +15,7 @@ public class Jugador {
     private String equipo;
     private int golesTemporada;
     private int golesCarrera;
-    private int golesCompeticion;
+    private int golesSeleccion;
 
 
     public Long getId(){
@@ -34,8 +34,8 @@ public class Jugador {
     public int getGolesTemporada(){
         return golesTemporada;
     }    
-    public int getGolesCompeticion(){
-        return golesCompeticion;
+    public int getGolesSeleccion(){
+        return golesSeleccion;
     }
 
     public void setId(Long id){
@@ -47,14 +47,14 @@ public class Jugador {
     public void setEquipo(String equipo){
         this.equipo=equipo;
     }
-    public void setGoles_carrera(int golesCarrera){
+    public void setGolesCarrera(int golesCarrera){
         this.golesCarrera=golesCarrera;
     }
-    public void setGoles_temporada(int golesTemporada){
+    public void setGolesTemporada(int golesTemporada){
         this.golesTemporada=golesTemporada;
     }
-    public void setGoles_competicion(int golesCompeticion){
-        this.golesCompeticion=golesCompeticion;
+    public void setGolesSeleccion(int golesSeleccion){
+        this.golesSeleccion=golesSeleccion;
     }
 }
 

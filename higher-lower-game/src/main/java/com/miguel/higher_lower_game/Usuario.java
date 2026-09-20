@@ -15,7 +15,9 @@ public class Usuario {
     @Column(unique=true)
     private String nombre;
     private String password;
-    private int record;
+    private int recordCarrera;
+	private int recordTemporada;
+	private int recordSeleccion;
 	public Long getIdUsuario() {
 		return idUsuario;
 	}
@@ -28,8 +30,14 @@ public class Usuario {
 	public void setPassword(String password) {
 		this.password = password;
 	}
-	public void setRecord(int record) {
-		this.record = record;
+	public void setRecordCarrera(int recordCarrera) {
+		this.recordCarrera = recordCarrera;
+	}
+	public void setRecordTemporada(int recordTemporada) {
+		this.recordTemporada = recordTemporada;
+	}
+	public void setRecordSeleccion(int recordSeleccion) {
+		this.recordSeleccion = recordSeleccion;
 	}
 	public String getNombre() {
 		return nombre;
@@ -37,8 +45,17 @@ public class Usuario {
 	public String getPassword() {
 		return password;
 	}
-	public int getRecord() {
-		return record;
+	public int getRecordCarrera() {
+		return recordCarrera;
+
+	}
+	public int getRecordTemporada() {
+		return recordTemporada;
+		
+	}
+	public int getRecordSeleccion() {
+		return recordSeleccion;
+		
 	}
 
 

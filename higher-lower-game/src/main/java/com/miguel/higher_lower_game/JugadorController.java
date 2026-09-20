@@ -45,9 +45,9 @@ public class JugadorController {
         golesElegido= elegido.getGolesTemporada();
         golesOtro=otro.getGolesTemporada();
 
-    }else if(categoria.equals("golesCompeticion")){
-        golesElegido=elegido.getGolesCompeticion();
-        golesOtro= otro.getGolesCompeticion();
+    }else if(categoria.equals("golesSeleccion")){
+        golesElegido=elegido.getGolesSeleccion();
+        golesOtro= otro.getGolesSeleccion();
 
     } else {
     throw new IllegalArgumentException("Categoría no válida: " + categoria);

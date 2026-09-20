@@ -49,28 +49,37 @@ public class UsuarioController {
         return jwtUtil.generarToken(usuario.getNombre());
     }
     @PostMapping("/record")
-    public Usuario actualizarRecord(@RequestHeader("Authorization") String authHeader, @RequestBody Map<String, Integer> datos) {
+    public Usuario actualizarRecord(@RequestHeader("Authorization") String authHeader, @RequestBody Map<String, Object> datos) {
         String token = authHeader.replace("Bearer ", "");
         String nombreUsuario = jwtUtil.extraerNombreUsuario(token);
 
         Usuario usuario = usuarioRepository.findByNombre(nombreUsuario);
 
-        int nuevaRacha = datos.get("racha");
+        int nuevaRacha = ((Number) datos.get("racha")).intValue();
+        String categoria = (String) datos.get("categoria");
 
-        if(nuevaRacha>usuario.getRecord()){
-            usuario.setRecord(nuevaRacha);
-            usuarioRepository.save(usuario);
+        if ("golesCarrera".equals(categoria) && nuevaRacha > usuario.getRecordCarrera()) {
+            usuario.setRecordCarrera(nuevaRacha);
+        } else if ("golesSeleccion".equals(categoria) && nuevaRacha > usuario.getRecordSeleccion()) {
+            usuario.setRecordSeleccion(nuevaRacha);
+        } else if ("golesTemporada".equals(categoria) && nuevaRacha > usuario.getRecordTemporada()) {
+            usuario.setRecordTemporada(nuevaRacha);
         }
-
+        usuarioRepository.save(usuario);
     return usuario;
 }
     @GetMapping("/ranking")
     public List<UsuarioRankingDTO> ranking() {
-        List<Usuario> usuarios = usuarioRepository.findAllByOrderByRecordDesc();
+        List<Usuario> usuarios = usuarioRepository.findAll();
         List<UsuarioRankingDTO> resultado = new ArrayList<>();
 
         for (Usuario u : usuarios) {
-            UsuarioRankingDTO dto = new UsuarioRankingDTO(u.getNombre(),u.getRecord());
+            UsuarioRankingDTO dto = new UsuarioRankingDTO(
+                u.getNombre(),
+                u.getRecordCarrera(),
+                u.getRecordSeleccion(),
+                u.getRecordTemporada()
+            );
             resultado.add(dto);
     }
 
