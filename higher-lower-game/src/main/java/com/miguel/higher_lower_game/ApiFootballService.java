@@ -40,4 +40,42 @@ public class ApiFootballService {
             throw new RuntimeException("No se pudo obtener datos del jugador " + idApiFootball, e);
         }
     }
+        public Jugador crearJugadorDesdeJson(JsonNode datos) {
+        JsonNode player = datos.get("player");
+        JsonNode statistics = datos.get("statistics");
+
+        String nombre = player.get("name").asText();
+        String foto = player.get("photo").asText();
+        String nacionalidad = player.get("nationality").asText();
+
+        int golesTemporada = 0;
+        int golesSeleccion = 0;
+
+        int[] ligasConocidas = {140, 39, 78, 61, 135};
+
+        for (JsonNode entrada : statistics) {
+            int ligaId = entrada.get("league").get("id").isNull() ? -1 : entrada.get("league").get("id").asInt();
+            String equipoNombre = entrada.get("team").get("name").asText();
+            int golesEntrada = entrada.get("goals").get("total").isNull() ? 0 : entrada.get("goals").get("total").asInt();
+
+            for (int ligaConocida : ligasConocidas) {
+                if (ligaId == ligaConocida) {
+                    golesTemporada += golesEntrada;
+                    break;
+                }
+            }
+
+            if (equipoNombre.equals(nacionalidad)) {
+                golesSeleccion += golesEntrada;
+            }
+        }
+
+        Jugador jugador = new Jugador();
+        jugador.setNombre(nombre);
+        jugador.setUrlFoto(foto);
+        jugador.setGolesTemporada(golesTemporada);
+        jugador.setGolesSeleccion(golesSeleccion);
+
+        return jugador;
+    }
 }
