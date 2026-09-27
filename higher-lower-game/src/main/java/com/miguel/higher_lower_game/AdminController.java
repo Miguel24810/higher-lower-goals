@@ -2,7 +2,8 @@ package com.miguel.higher_lower_game;
 
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.web.bind.annotation.*;
-
+import com.fasterxml.jackson.databind.JsonNode;
+import java.util.Optional;
 @RestController
 @RequestMapping("/admin")
 public class AdminController {
@@ -25,7 +26,27 @@ public class AdminController {
         }
 
         // Aquí: la lógica de sincronización (la construimos en el siguiente paso)
+        int[] idsJugadores = {276, 874, 278}; // ejemplo, los iremos ampliando
 
+        for (int idApi : idsJugadores) {
+            JsonNode datos = apiFootballService.obtenerDatosCrudos(idApi, 2023);
+            Jugador jugadorNuevo = apiFootballService.crearJugadorDesdeJson(datos);
+
+            Optional<Jugador> existente = jugadorRepository.findByIdApiFootball(idApi);
+
+            if (existente.isPresent()) {
+                Jugador jugadorAActualizar = existente.get();
+                jugadorAActualizar.setNombre(jugadorNuevo.getNombre());
+                jugadorAActualizar.setUrlFoto(jugadorNuevo.getUrlFoto());
+                jugadorAActualizar.setGolesTemporada(jugadorNuevo.getGolesTemporada());
+                jugadorAActualizar.setGolesSeleccion(jugadorNuevo.getGolesSeleccion());
+                jugadorRepository.save(jugadorAActualizar);
+            } else {
+                jugadorNuevo.setIdApiFootball(idApi);
+                jugadorRepository.save(jugadorNuevo);
+            }
+        }
         return "Sincronización completada";
     }
+
 }
