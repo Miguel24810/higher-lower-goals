@@ -37,6 +37,26 @@ class ApiFootballServiceTest {
     }
 
     @Test
+    void obtenerDatosCrudos_lanzaErrorSiResponseEstaVacio() {
+        RestTemplate restTemplateFalso = Mockito.mock(RestTemplate.class);
+        ResponseEntity<String> respuestaFalsa = new ResponseEntity<>("{\"response\":[]}", HttpStatus.OK);
+
+        Mockito.when(restTemplateFalso.exchange(
+                Mockito.anyString(),
+                Mockito.any(),
+                Mockito.any(),
+                Mockito.eq(String.class)
+        )).thenReturn(respuestaFalsa);
+
+        ApiFootballService service = new ApiFootballService(restTemplateFalso);
+
+        RuntimeException error = assertThrows(RuntimeException.class,
+                () -> service.obtenerDatosCrudos(276, 2023));
+
+        assertEquals("Sin datos para el jugador 276 en la temporada 2023", error.getMessage());
+    }
+
+    @Test
     void crearJugadorDesdeJson_sumaGolesCorrectamente() throws Exception {
         // Arrange
         String jsonDeMentira = "{\"player\":{\"name\":\"Neymar\",\"photo\":\"foto.jpg\",\"nationality\":\"Brasil\"},\"statistics\":[{\"league\":{\"id\":140},\"team\":{\"name\":\"Barcelona\"},\"goals\":{\"total\":10}},{\"league\":{\"id\":999},\"team\":{\"name\":\"Brasil\"},\"goals\":{\"total\":3}}]}";
@@ -48,6 +68,7 @@ class ApiFootballServiceTest {
         Jugador resultado = service.crearJugadorDesdeJson(datos);
 
         // Assert
+        assertEquals("Barcelona", resultado.getEquipo());
         assertEquals(10, resultado.getGolesTemporada());
         assertEquals(3, resultado.getGolesSeleccion());
     }

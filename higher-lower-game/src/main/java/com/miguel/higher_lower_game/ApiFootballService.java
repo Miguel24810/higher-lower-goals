@@ -32,13 +32,19 @@ public class ApiFootballService {
 
         ResponseEntity<String> respuesta = restTemplate.exchange(url, HttpMethod.GET, entity, String.class);
 
+        JsonNode raiz;
         try {
             ObjectMapper mapper = new ObjectMapper();
-            JsonNode raiz = mapper.readTree(respuesta.getBody());
-            return raiz.get("response").get(0);
+            raiz = mapper.readTree(respuesta.getBody());
         } catch (Exception e) {
             throw new RuntimeException("No se pudo obtener datos del jugador " + idApiFootball, e);
         }
+
+        JsonNode response = raiz == null ? null : raiz.get("response");
+        if (response == null || !response.isArray() || response.isEmpty()) {
+            throw new RuntimeException("Sin datos para el jugador " + idApiFootball + " en la temporada " + temporada);
+        }
+        return response.get(0);
     }
         public Jugador crearJugadorDesdeJson(JsonNode datos) {
         JsonNode player = datos.get("player");
@@ -47,6 +53,7 @@ public class ApiFootballService {
         String nombre = player.get("name").asText();
         String foto = player.get("photo").asText();
         String nacionalidad = player.get("nationality").asText();
+        String equipo = statistics.get(0).get("team").get("name").asText();
 
         int golesTemporada = 0;
         int golesSeleccion = 0;
@@ -72,6 +79,7 @@ public class ApiFootballService {
 
         Jugador jugador = new Jugador();
         jugador.setNombre(nombre);
+        jugador.setEquipo(equipo);
         jugador.setUrlFoto(foto);
         jugador.setGolesTemporada(golesTemporada);
         jugador.setGolesSeleccion(golesSeleccion);
