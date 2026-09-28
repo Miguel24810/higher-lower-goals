@@ -2,19 +2,64 @@
 let categoriaElegida = '';
 let jugadorActual1 = null;
 let jugadorActual2 = null;
+let intervaloTemporizador = null;
 let usuariosRanking = [];
 let indiceCategoriaRanking = 0;
 
 const categoriasRanking = [
     { id: 'golesCarrera', nombre: 'Goles en la carrera', record: 'recordCarrera' },
-    { id: 'golesTemporada', nombre: 'Goles esta temporada', record: 'recordTemporada' },
-    { id: 'golesSeleccion', nombre: 'Goles en Selección', record: 'recordSeleccion' }
+    { id: 'golesTemporada', nombre: 'Goles Temporada 24/25', record: 'recordTemporada' },
+    { id: 'golesSeleccion', nombre: 'Goles Selección Temporada 24/25', record: 'recordSeleccion' }
 ];
 
 function limpiarEstadoJuego() {
+    detenerTemporizador();
     rachaActual = 0;
     document.getElementById('mensaje-resultado').textContent = '';
+    document.getElementById('temporizador-visual').textContent = '10.0 s';
+    document.querySelector('#temporizador-barra span').style.transform = 'scaleX(1)';
+    document.getElementById('temporizador-barra').setAttribute('aria-valuenow', '10');
     document.getElementById('racha-visual').textContent = 'Racha: 0';
+}
+
+function detenerTemporizador() {
+    clearInterval(intervaloTemporizador);
+    intervaloTemporizador = null;
+}
+
+function bloquearBotonesJugador(bloqueados) {
+    document.getElementById('btn-jugador1').disabled = bloqueados;
+    document.getElementById('btn-jugador2').disabled = bloqueados;
+}
+
+function iniciarTemporizador() {
+    detenerTemporizador();
+    const duracion = 10000;
+    const horaFin = Date.now() + duracion;
+    const temporizadorVisual = document.getElementById('temporizador-visual');
+    const barraTemporizador = document.getElementById('temporizador-barra');
+    const rellenoBarra = barraTemporizador.querySelector('span');
+
+    function actualizarTemporizador() {
+        const restante = Math.max(0, horaFin - Date.now());
+        const segundosRestantes = restante / 1000;
+        temporizadorVisual.textContent = segundosRestantes.toFixed(1) + ' s';
+        rellenoBarra.style.transform = 'scaleX(' + (restante / duracion) + ')';
+        barraTemporizador.setAttribute('aria-valuenow', segundosRestantes.toFixed(1));
+
+        if (restante <= 0) {
+            detenerTemporizador();
+            bloquearBotonesJugador(true);
+            document.getElementById('mensaje-resultado').textContent = 'Se acabó el tiempo. Tu racha era: ' + rachaActual;
+            guardarRecord();
+            rachaActual = 0;
+            document.getElementById('racha-visual').textContent = 'Racha: 0';
+            pedirNuevoPar();
+        }
+    }
+
+    actualizarTemporizador();
+    intervaloTemporizador = setInterval(actualizarTemporizador, 50);
 }
 
 function iniciarSesion(nombre, password) {
@@ -110,6 +155,8 @@ document.getElementById('btn-volver-login').addEventListener('click', function()
 });
 
 document.getElementById('btn-jugador1').addEventListener('click', function() {
+    detenerTemporizador();
+    bloquearBotonesJugador(true);
     fetch('http://localhost:8081/jugadores/comparar', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
@@ -138,6 +185,8 @@ document.getElementById('btn-jugador1').addEventListener('click', function() {
 });
 
 document.getElementById('btn-jugador2').addEventListener('click', function() {
+    detenerTemporizador();
+    bloquearBotonesJugador(true);
     fetch('http://localhost:8081/jugadores/comparar', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
@@ -166,6 +215,8 @@ document.getElementById('btn-jugador2').addEventListener('click', function() {
 });
 
 function pedirNuevoPar() {
+    detenerTemporizador();
+    bloquearBotonesJugador(true);
     fetch('http://localhost:8081/jugadores/random-pair')
         .then(response => response.json())
         .then(jugadores => {
@@ -173,6 +224,11 @@ function pedirNuevoPar() {
             jugadorActual2 = jugadores[1];
             document.getElementById('btn-jugador1').textContent = jugadorActual1.nombre;
             document.getElementById('btn-jugador2').textContent = jugadorActual2.nombre;
+            document.getElementById('temporizador-visual').textContent = '10.0 s';
+            document.querySelector('#temporizador-barra span').style.transform = 'scaleX(1)';
+            document.getElementById('temporizador-barra').setAttribute('aria-valuenow', '10');
+            bloquearBotonesJugador(false);
+            iniciarTemporizador();
         });
 }
 
@@ -257,9 +313,31 @@ function renderizarRanking() {
     usuariosRanking
         .slice()
         .sort((usuarioA, usuarioB) => usuarioB[categoria.record] - usuarioA[categoria.record])
-        .forEach(function(usuario) {
+        .forEach(function(usuario, indice) {
+            const posicion = indice + 1;
             const item = document.createElement('li');
-            item.textContent = usuario.nombre + ' - Récord: ' + usuario[categoria.record];
+            const indicadorPosicion = document.createElement('span');
+            const nombre = document.createElement('span');
+            const record = document.createElement('span');
+
+            if (posicion <= 3) {
+                const medallas = ['🥇', '🥈', '🥉'];
+                const puestos = ['Primer puesto', 'Segundo puesto', 'Tercer puesto'];
+                item.classList.add('puesto-' + posicion);
+                indicadorPosicion.className = 'ranking-medalla';
+                indicadorPosicion.setAttribute('aria-label', puestos[indice]);
+                indicadorPosicion.textContent = medallas[indice];
+            } else {
+                indicadorPosicion.className = 'ranking-posicion';
+                indicadorPosicion.textContent = posicion;
+            }
+
+            nombre.className = 'ranking-nombre';
+            nombre.textContent = usuario.nombre;
+            record.className = 'ranking-record';
+            record.textContent = 'Récord: ' + usuario[categoria.record];
+
+            item.append(indicadorPosicion, nombre, record);
             lista.appendChild(item);
         });
 }

@@ -53,6 +53,12 @@
 
         <div id="pantalla-juego" style="display: none;">
             <h2>¿Quién tiene más goles en la 24/25?</h2>
+            <div id="temporizador-contenedor">
+                <p id="temporizador-visual" aria-live="off">10.0 s</p>
+                <div id="temporizador-barra" role="progressbar" aria-label="Tiempo restante" aria-valuemin="0" aria-valuemax="10" aria-valuenow="10">
+                    <span></span>
+                </div>
+            </div>
             <button id="btn-jugador1"></button>
             <button id="btn-jugador2"></button>
             <p id="mensaje-resultado"></p>
