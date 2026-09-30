@@ -95,6 +95,13 @@ document.getElementById('btn-login').addEventListener('click', function() {
     const password = document.getElementById('login-password').value;
     iniciarSesion(nombre, password);
 });
+document.getElementById('btn-toggle-login-password').addEventListener('click', function() {
+    const password = document.getElementById('login-password');
+    const mostrar = password.type === 'password';
+    password.type = mostrar ? 'text' : 'password';
+    this.dataset.visible = String(mostrar);
+    this.setAttribute('aria-label', mostrar ? 'Ocultar contraseña' : 'Mostrar contraseña');
+});
 document.getElementById('link-ir-registro').addEventListener('click', function(event) {
     event.preventDefault();
     document.getElementById('pantalla-login').style.display = 'none';
@@ -117,7 +124,10 @@ document.getElementById('btn-registro').addEventListener('click', function() {
     })
     .then(response => {
         if (!response.ok) {
-            throw new Error('No se pudo registrar (¿el usuario ya existe?)');
+            if (response.status === 409) {
+                throw new Error('Ese nombre de usuario ya está en uso');
+            }
+            throw new Error('No se pudo registrar');
         }
         return response.json();
     })
@@ -273,25 +283,6 @@ function consultarRecord() {
     });
 
 }
-const videoFondo = document.getElementById('video-fondo');
-
-videoFondo.addEventListener('timeupdate', function() {
-    const tiempoRestante = videoFondo.duration - videoFondo.currentTime;
-
-    if (tiempoRestante <= 0.5) {
-        videoFondo.classList.add('fade-video');
-    }
-});
-
-videoFondo.addEventListener('ended', function() {
-    videoFondo.currentTime = 0;
-    videoFondo.play();
-
-    setTimeout(function() {
-        videoFondo.classList.remove('fade-video');
-    }, 100);
-});
-
 document.getElementById('btn-ver-ranking').addEventListener('click', function() {
     fetch('http://localhost:8081/usuarios/ranking')
         .then(response => response.json())
@@ -335,7 +326,8 @@ function renderizarRanking() {
             nombre.className = 'ranking-nombre';
             nombre.textContent = usuario.nombre;
             record.className = 'ranking-record';
-            record.textContent = 'Récord: ' + usuario[categoria.record];
+            record.textContent = usuario[categoria.record];
+            record.setAttribute('aria-label', 'Récord: ' + usuario[categoria.record]);
 
             item.append(indicadorPosicion, nombre, record);
             lista.appendChild(item);

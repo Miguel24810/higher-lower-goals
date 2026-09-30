@@ -1,6 +1,8 @@
 package com.miguel.higher_lower_game;
 
 import org.springframework.web.bind.annotation.*;
+import org.springframework.http.HttpStatus;
+import org.springframework.web.server.ResponseStatusException;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -23,6 +25,10 @@ public class UsuarioController {
 
     @PostMapping("/registro")
     public UsuarioRankingDTO registrar(@RequestBody UsuarioCredencialesDTO datosRegistro) {
+        if (usuarioRepository.findByNombre(datosRegistro.nombre()) != null) {
+            throw new ResponseStatusException(HttpStatus.CONFLICT, "El nombre de usuario ya está en uso.");
+        }
+
         Usuario usuario = new Usuario();
         usuario.setNombre(datosRegistro.nombre());
         usuario.setPassword(passwordEncoder.encode(datosRegistro.password()));

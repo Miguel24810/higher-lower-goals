@@ -2,20 +2,29 @@
 <html lang="es">
 <head>
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>Higher or Lower - Fútbol</title>
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
-    <video id="video-fondo" autoplay muted playsinline>
+    <video id="video-fondo" autoplay muted loop playsinline preload="metadata" aria-hidden="true">
         <source src="videos/videofutbol.mp4" type="video/mp4">
-        Tu navegador no soporta videos HTML5.
     </video>
 
     <div id="contenido">
         <div id="pantalla-login">
             <h1>WHO HAS MORE? ⚽</h1>
             <input type="text" id="login-nombre" placeholder="Nombre de usuario">
-            <input type="password" id="login-password" placeholder="Contraseña">
+            <div class="login-password-field">
+                <input type="password" id="login-password" placeholder="Contraseña">
+                <button class="password-visibility-toggle" id="btn-toggle-login-password" type="button" aria-label="Mostrar contraseña" aria-controls="login-password">
+                    <svg viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M2.5 12s3.5-6.5 9.5-6.5 9.5 6.5 9.5 6.5-3.5 6.5-9.5 6.5S2.5 12 2.5 12Z"></path>
+                        <circle cx="12" cy="12" r="2.7"></circle>
+                        <path class="password-eye-slash" d="m4 4 16 16"></path>
+                    </svg>
+                </button>
+            </div>
             <button id="btn-login">Iniciar sesión</button>
             <p><a href="#" id="link-ir-registro">¿No tienes cuenta? Regístrate</a></p>
             <p id="mensaje-error"></p>
@@ -41,7 +50,7 @@
         </div>
 
         <div id="pantalla-ranking" style="display: none;">
-            <h2>Ranking</h2>
+            <h2>RANKING</h2>
             <div id="ranking-controles">
                 <button id="btn-ranking-anterior" type="button" aria-label="Categoría anterior">←</button>
                 <strong id="ranking-categoria"></strong>
@@ -62,13 +71,12 @@
             <button id="btn-jugador1"></button>
             <button id="btn-jugador2"></button>
             <p id="mensaje-resultado"></p>
-            <p id="racha-visual">Racha: 0</p>
-            <p id="record-visual">Récord: 0</p>
+            <p id="racha-visual">RACHA: 0</p>
+            <p id="record-visual">RÉCORD: 0</p>
             <button id="btn-volver-categoria">← Cambiar categoría</button>
         </div>
     </div>
 
-    <script src="script.js"></script>
+    <script src="script.js?v=4"></script>
 </body>
-</html>
 </html>
