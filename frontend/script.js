@@ -298,6 +298,7 @@ document.getElementById('btn-ver-ranking').addEventListener('click', function() 
 function renderizarRanking() {
     const categoria = categoriasRanking[indiceCategoriaRanking];
     const lista = document.getElementById('lista-ranking');
+    document.getElementById('pantalla-ranking').dataset.rankingCategory = categoria.id;
     lista.innerHTML = '';
     document.getElementById('ranking-categoria').textContent = categoria.nombre;
 

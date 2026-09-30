@@ -419,6 +419,145 @@ input:focus-visible {
     backdrop-filter: none;
 }
 
+.ranking-watermarks {
+    position: absolute;
+    z-index: 0;
+    inset: 0;
+    overflow: hidden;
+    pointer-events: none;
+}
+
+.ranking-watermarks--clubs,
+.ranking-watermarks--national {
+    display: none;
+}
+
+#pantalla-ranking[data-ranking-category="golesTemporada"] .ranking-watermarks--clubs,
+#pantalla-ranking[data-ranking-category="golesSeleccion"] .ranking-watermarks--national {
+    display: block;
+}
+
+.ranking-watermarks img {
+    position: absolute;
+    width: clamp(38px, 4.6vw, 60px);
+    aspect-ratio: 1;
+    object-fit: contain;
+    opacity: 0.075;
+    filter: saturate(0.72) brightness(1.08);
+    --crest-drift-1-x: 14px;
+    --crest-drift-1-y: -12px;
+    --crest-drift-2-x: -10px;
+    --crest-drift-2-y: -18px;
+    --crest-drift-3-x: -14px;
+    --crest-drift-3-y: 8px;
+    animation: crest-drift 27s ease-in-out infinite;
+}
+
+.ranking-watermarks img:nth-child(3n + 1) {
+    animation-duration: 24s;
+    animation-delay: -7s;
+}
+
+.ranking-watermarks img:nth-child(3n + 2) {
+    animation-duration: 29s;
+    animation-delay: -16s;
+}
+
+.ranking-watermarks img:nth-child(3n) {
+    animation-duration: 32s;
+    animation-delay: -23s;
+}
+
+.ranking-watermarks--clubs img:nth-child(1),
+.ranking-watermarks--national img:nth-child(1) {
+    top: 8%;
+    left: 4%;
+    --crest-rotation: -9deg;
+}
+
+.ranking-watermarks--clubs img:nth-child(2),
+.ranking-watermarks--national img:nth-child(2) {
+    top: 8%;
+    right: 4%;
+    --crest-rotation: 8deg;
+}
+
+.ranking-watermarks--clubs img:nth-child(3),
+.ranking-watermarks--national img:nth-child(3) {
+    top: 23%;
+    left: 4%;
+    --crest-rotation: 7deg;
+}
+
+.ranking-watermarks--clubs img:nth-child(4),
+.ranking-watermarks--national img:nth-child(4) {
+    right: 4%;
+    top: 23%;
+    --crest-rotation: -8deg;
+}
+
+.ranking-watermarks--clubs img:nth-child(5),
+.ranking-watermarks--national img:nth-child(5) {
+    top: 38%;
+    left: 4%;
+    --crest-rotation: -6deg;
+}
+
+.ranking-watermarks--clubs img:nth-child(6),
+.ranking-watermarks--national img:nth-child(6) {
+    top: 38%;
+    right: 4%;
+    --crest-rotation: 9deg;
+}
+
+.ranking-watermarks img:nth-child(7) {
+    top: 53%;
+    left: 4%;
+    --crest-rotation: -5deg;
+}
+
+.ranking-watermarks img:nth-child(8) {
+    top: 53%;
+    right: 4%;
+    --crest-rotation: 6deg;
+}
+
+.ranking-watermarks img:nth-child(9) {
+    top: 68%;
+    left: 4%;
+    --crest-rotation: 8deg;
+}
+
+.ranking-watermarks img:nth-child(10) {
+    top: 68%;
+    right: 4%;
+    --crest-rotation: -7deg;
+}
+
+.ranking-watermarks img:nth-child(11) {
+    bottom: 8%;
+    left: 4%;
+    --crest-rotation: -8deg;
+}
+
+.ranking-watermarks img:nth-child(12) {
+    right: 4%;
+    bottom: 8%;
+    --crest-rotation: 7deg;
+}
+
+#pantalla-ranking > :not(.ranking-watermarks) {
+    position: relative;
+    z-index: 1;
+}
+
+@keyframes crest-drift {
+    0%, 100% { transform: translate3d(0, 0, 0) rotate(var(--crest-rotation)); }
+    25% { transform: translate3d(var(--crest-drift-1-x), var(--crest-drift-1-y), 0) rotate(calc(var(--crest-rotation) + 1deg)); }
+    50% { transform: translate3d(var(--crest-drift-2-x), var(--crest-drift-2-y), 0) rotate(calc(var(--crest-rotation) - 1deg)); }
+    75% { transform: translate3d(var(--crest-drift-3-x), var(--crest-drift-3-y), 0) rotate(calc(var(--crest-rotation) + 0.5deg)); }
+}
+
 #pantalla-ranking h2 {
     margin-bottom: 30px;
     color: #f3f5eb;
@@ -484,7 +623,7 @@ input:focus-visible {
 
 #lista-ranking li {
     display: grid;
-    grid-template-columns: 50px minmax(0, 1fr) auto;
+    grid-template-columns: 60px minmax(0, 1fr) auto;
     min-width: 0;
     align-items: center;
     gap: 14px;
@@ -547,10 +686,10 @@ input:focus-visible {
 }
 
 #lista-ranking li.puesto-1 .ranking-medalla {
-    width: 48px;
-    height: 48px;
+    width: 58px;
+    height: 58px;
     color: var(--gold);
-    font-size: 1.4rem;
+    font-size: 1.65rem;
     border: 1px solid rgba(242, 204, 116, 0.6);
     border-radius: 50%;
     background: rgba(177, 126, 31, 0.12);
@@ -569,10 +708,10 @@ input:focus-visible {
 }
 
 #lista-ranking li.puesto-2 .ranking-medalla {
-    width: 44px;
-    height: 44px;
+    width: 50px;
+    height: 50px;
     color: #dce5df;
-    font-size: 1.25rem;
+    font-size: 1.4rem;
     border: 1px solid rgba(215, 226, 219, 0.56);
     border-radius: 50%;
     background: rgba(172, 190, 180, 0.1);
@@ -591,10 +730,10 @@ input:focus-visible {
 }
 
 #lista-ranking li.puesto-3 .ranking-medalla {
-    width: 40px;
-    height: 40px;
+    width: 44px;
+    height: 44px;
     color: #e3b394;
-    font-size: 1.15rem;
+    font-size: 1.2rem;
     border: 1px solid rgba(214, 158, 123, 0.56);
     border-radius: 50%;
     background: rgba(158, 88, 51, 0.1);
@@ -859,6 +998,34 @@ button:active {
     to { opacity: 1; transform: translateY(0); }
 }
 
+@media (min-width: 701px) and (max-width: 960px) {
+    .ranking-watermarks img {
+        width: 30px;
+        opacity: 0.045;
+        --crest-drift-1-x: 8px;
+        --crest-drift-1-y: -7px;
+        --crest-drift-2-x: -6px;
+        --crest-drift-2-y: -10px;
+        --crest-drift-3-x: -8px;
+        --crest-drift-3-y: 5px;
+        animation-duration: 32s;
+    }
+
+    .ranking-watermarks img:nth-child(odd) {
+        right: auto;
+        left: 2.5%;
+    }
+
+    .ranking-watermarks img:nth-child(even) {
+        right: 2.5%;
+        left: auto;
+    }
+
+    .ranking-watermarks img:nth-child(n + 9) {
+        display: none;
+    }
+}
+
 @media (max-width: 700px) {
     #contenido {
         padding: 16px 14px calc(20px + env(safe-area-inset-bottom));
@@ -869,6 +1036,32 @@ button:active {
     #pantalla-ranking {
         padding: 24px;
         border-radius: 18px;
+    }
+
+    .ranking-watermarks img {
+        width: 24px;
+        opacity: 0.04;
+        --crest-drift-1-x: 5px;
+        --crest-drift-1-y: -5px;
+        --crest-drift-2-x: -4px;
+        --crest-drift-2-y: -7px;
+        --crest-drift-3-x: -5px;
+        --crest-drift-3-y: 4px;
+        animation-duration: 36s;
+    }
+
+    .ranking-watermarks img:nth-child(odd) {
+        right: auto;
+        left: 3%;
+    }
+
+    .ranking-watermarks img:nth-child(even) {
+        right: 3%;
+        left: auto;
+    }
+
+    .ranking-watermarks img:nth-child(n + 7) {
+        display: none;
     }
 
     h1 {
@@ -927,7 +1120,7 @@ button:active {
     }
 
     #lista-ranking li {
-        grid-template-columns: 46px minmax(0, 1fr) auto;
+        grid-template-columns: 54px minmax(0, 1fr) auto;
         gap: 8px;
         padding: 10px;
     }
@@ -939,20 +1132,20 @@ button:active {
     }
 
     #lista-ranking li.puesto-1 .ranking-medalla {
-        width: 44px;
-        height: 44px;
-        font-size: 1.3rem;
+        width: 52px;
+        height: 52px;
+        font-size: 1.5rem;
     }
 
     #lista-ranking li.puesto-2 .ranking-medalla {
-        width: 40px;
-        height: 40px;
-        font-size: 1.15rem;
+        width: 46px;
+        height: 46px;
+        font-size: 1.3rem;
     }
 
     #lista-ranking li.puesto-3 .ranking-medalla {
-        width: 36px;
-        height: 36px;
+        width: 40px;
+        height: 40px;
         font-size: 1.05rem;
     }
 
