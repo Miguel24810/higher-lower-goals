@@ -2,12 +2,20 @@ package com.miguel.higher_lower_game;
 
 import org.springframework.web.bind.annotation.*;
 import java.util.List;
+import java.nio.charset.StandardCharsets;
+import java.security.MessageDigest;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.http.HttpStatus;
+import org.springframework.web.server.ResponseStatusException;
 import java.util.Map;
 @RestController
 @RequestMapping("/jugadores")
 public class JugadorController {
 
     private final JugadorRepository jugadorRepository;
+
+    @Value("${admin.sync.key}")
+    private String claveAdmin;
 
     public JugadorController(JugadorRepository jugadorRepository) {
         this.jugadorRepository = jugadorRepository;
@@ -17,7 +25,12 @@ public class JugadorController {
     return jugadorRepository.findAll();
 }  
     @PostMapping
-    public Jugador crear(@RequestBody  Jugador jugador){
+    public Jugador crear(@RequestHeader(value = "X-Admin-Key", required = false) String claveRecibida,
+                         @RequestBody Jugador jugador) {
+        if (claveRecibida == null || !MessageDigest.isEqual(
+                claveAdmin.getBytes(StandardCharsets.UTF_8), claveRecibida.getBytes(StandardCharsets.UTF_8))) {
+            throw new ResponseStatusException(HttpStatus.FORBIDDEN, "No autorizado");
+        }
         return jugadorRepository.save(jugador);
 
     }

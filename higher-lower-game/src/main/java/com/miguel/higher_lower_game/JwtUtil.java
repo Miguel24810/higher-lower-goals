@@ -2,17 +2,26 @@ package com.miguel.higher_lower_game;
 
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.security.Keys;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
 import javax.crypto.SecretKey;
+import java.nio.charset.StandardCharsets;
 import java.util.Date;
 
 @Component
 public class JwtUtil {
 
-    @SuppressWarnings("deprecation")
-	private final SecretKey clave = Keys.secretKeyFor(io.jsonwebtoken.SignatureAlgorithm.HS256);
+    private final SecretKey clave;
     private final long expiracionMs = 1000 * 60 * 60; // 1 hora
+
+    public JwtUtil(@Value("${jwt.secret}") String jwtSecret) {
+        byte[] secretBytes = jwtSecret.getBytes(StandardCharsets.UTF_8);
+        if (secretBytes.length < 32) {
+            throw new IllegalArgumentException("JWT_SECRET debe tener al menos 32 bytes");
+        }
+        this.clave = Keys.hmacShaKeyFor(secretBytes);
+    }
 
     public String generarToken(String nombreUsuario) {
         return Jwts.builder()

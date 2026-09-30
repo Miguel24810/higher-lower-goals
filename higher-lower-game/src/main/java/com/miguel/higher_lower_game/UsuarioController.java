@@ -4,8 +4,6 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
-
 import org.springframework.security.crypto.password.PasswordEncoder;
 
 
@@ -24,23 +22,22 @@ public class UsuarioController {
     }
 
     @PostMapping("/registro")
-    public Usuario registrar(@RequestBody Usuario usuario) {
-        String passwordPlano = usuario.getPassword();
-        String passwordCifrado = passwordEncoder.encode(passwordPlano);
-        usuario.setPassword(passwordCifrado);
-        return usuarioRepository.save(usuario);
-
+    public UsuarioRankingDTO registrar(@RequestBody UsuarioCredencialesDTO datosRegistro) {
+        Usuario usuario = new Usuario();
+        usuario.setNombre(datosRegistro.nombre());
+        usuario.setPassword(passwordEncoder.encode(datosRegistro.password()));
+        return aDto(usuarioRepository.save(usuario));
     }
 
     @PostMapping("/login")
-    public String login(@RequestBody Usuario datosLogin) {
-        Usuario usuario= usuarioRepository.findByNombre(datosLogin.getNombre());
+    public String login(@RequestBody UsuarioCredencialesDTO datosLogin) {
+        Usuario usuario= usuarioRepository.findByNombre(datosLogin.nombre());
 
         if(usuario== null){
             throw new UsuarioNoEncontradoException("Usuario no encontrado");
 
         }
-        boolean passwordCorrecta = passwordEncoder.matches(datosLogin.getPassword(), usuario.getPassword());
+        boolean passwordCorrecta = passwordEncoder.matches(datosLogin.password(), usuario.getPassword());
 
         if(!passwordCorrecta){
             throw new CredencialesInvalidasException("Contraseña incorrecta");
@@ -49,14 +46,15 @@ public class UsuarioController {
         return jwtUtil.generarToken(usuario.getNombre());
     }
     @PostMapping("/record")
-    public Usuario actualizarRecord(@RequestHeader("Authorization") String authHeader, @RequestBody Map<String, Object> datos) {
+    public UsuarioRankingDTO actualizarRecord(@RequestHeader("Authorization") String authHeader,
+                                               @RequestBody ActualizarRecordDTO datos) {
         String token = authHeader.replace("Bearer ", "");
         String nombreUsuario = jwtUtil.extraerNombreUsuario(token);
 
         Usuario usuario = usuarioRepository.findByNombre(nombreUsuario);
 
-        int nuevaRacha = ((Number) datos.get("racha")).intValue();
-        String categoria = (String) datos.get("categoria");
+        int nuevaRacha = datos.racha();
+        String categoria = datos.categoria();
 
         if ("golesCarrera".equals(categoria) && nuevaRacha > usuario.getRecordCarrera()) {
             usuario.setRecordCarrera(nuevaRacha);
@@ -66,7 +64,7 @@ public class UsuarioController {
             usuario.setRecordTemporada(nuevaRacha);
         }
         usuarioRepository.save(usuario);
-    return usuario;
+    return aDto(usuario);
 }
     @GetMapping("/ranking")
     public List<UsuarioRankingDTO> ranking() {
@@ -85,5 +83,10 @@ public class UsuarioController {
 
     return resultado;
 }
+
+    private UsuarioRankingDTO aDto(Usuario usuario) {
+        return new UsuarioRankingDTO(usuario.getNombre(), usuario.getRecordCarrera(),
+            usuario.getRecordSeleccion(), usuario.getRecordTemporada());
+    }
     
 }
