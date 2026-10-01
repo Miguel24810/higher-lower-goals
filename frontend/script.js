@@ -232,8 +232,8 @@ function pedirNuevoPar() {
         .then(jugadores => {
             jugadorActual1 = jugadores[0];
             jugadorActual2 = jugadores[1];
-            document.getElementById('btn-jugador1').textContent = jugadorActual1.nombre;
-            document.getElementById('btn-jugador2').textContent = jugadorActual2.nombre;
+            document.getElementById('btn-jugador1').innerHTML = '<img class="jugador-foto" src="' + jugadorActual1.urlFoto + '" alt=""><span class="jugador-nombre">' + jugadorActual1.nombre + '</span>';
+            document.getElementById('btn-jugador2').innerHTML = '<img class="jugador-foto" src="' + jugadorActual2.urlFoto + '" alt=""><span class="jugador-nombre">' + jugadorActual2.nombre + '</span>';
             document.getElementById('temporizador-visual').textContent = '10.0 s';
             document.querySelector('#temporizador-barra span').style.transform = 'scaleX(1)';
             document.getElementById('temporizador-barra').setAttribute('aria-valuenow', '10');

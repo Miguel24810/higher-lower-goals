@@ -817,6 +817,34 @@ input:focus-visible {
     animation: card-in 520ms var(--ease) both;
 }
 
+#btn-jugador1 img,
+#btn-jugador2 img {
+    position: absolute;
+    top: 38%;
+    left: 50%;
+    width: min(78%, 340px);
+    height: 68%;
+    object-fit: contain;
+    object-position: center;
+    opacity: 1;
+    filter: saturate(0.9) brightness(1.15) contrast(1.05);
+    mix-blend-mode: multiply;
+    transform: translate(-50%, -50%);
+    transition: transform 400ms var(--ease), opacity 240ms var(--ease);
+}
+
+#btn-jugador1 .jugador-nombre,
+#btn-jugador2 .jugador-nombre {
+    position: absolute;
+    z-index: 2;
+    right: 24px;
+    bottom: 24px;
+    left: 24px;
+    display: block;
+    background: transparent;
+    text-shadow: 0 2px 18px rgba(0, 0, 0, 0.9);
+}
+
 #btn-jugador2 {
     background:
         linear-gradient(180deg, rgba(5, 14, 8, 0.06), rgba(3, 10, 6, 0.92)),
@@ -834,6 +862,7 @@ input:focus-visible {
     font-weight: 850;
     letter-spacing: 0.08em;
     content: "ELIGE AL JUGADOR";
+    z-index: 2;
 }
 
 #btn-jugador1::after,
@@ -845,6 +874,7 @@ input:focus-visible {
     aspect-ratio: 1;
     content: "";
     pointer-events: none;
+    z-index: 1;
     border: 1px solid rgba(230, 255, 226, 0.15);
     border-radius: 50%;
     box-shadow: 0 0 0 24px rgba(230, 255, 226, 0.035), 0 0 0 52px rgba(230, 255, 226, 0.025);

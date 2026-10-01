@@ -26,7 +26,7 @@ public class AdminController {
         }
 
         // Aquí: la lógica de sincronización (la construimos en el siguiente paso)
-        int[] idsJugadores = {278}; // ejemplo, los iremos ampliando
+        int[] idsJugadores = {278,56,133609,1100,762}; // ejemplo, los iremos ampliando
 
         for (int idApi : idsJugadores) {
             JsonNode datos = apiFootballService.obtenerDatosCrudos(idApi, 2024);
