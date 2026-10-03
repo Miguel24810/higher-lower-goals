@@ -1,8 +1,12 @@
-package com.miguel.higher_lower_game;
+package com.miguel.higher_lower_game.controller;
 
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.web.bind.annotation.*;
 import com.fasterxml.jackson.databind.JsonNode;
+import com.miguel.higher_lower_game.model.Jugador;
+import com.miguel.higher_lower_game.repository.JugadorRepository;
+import com.miguel.higher_lower_game.service.ApiFootballService;
+
 import java.util.Optional;
 @RestController
 @RequestMapping("/admin")

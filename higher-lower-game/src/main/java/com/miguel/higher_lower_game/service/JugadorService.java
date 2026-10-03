@@ -1,6 +1,8 @@
-package com.miguel.higher_lower_game;
+package com.miguel.higher_lower_game.service;
 
 import org.springframework.stereotype.Service;
+
+import com.miguel.higher_lower_game.model.Jugador;
 
 @Service
 public class JugadorService {

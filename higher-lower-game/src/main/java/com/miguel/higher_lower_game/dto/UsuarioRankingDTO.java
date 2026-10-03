@@ -1,4 +1,4 @@
-package com.miguel.higher_lower_game;
+package com.miguel.higher_lower_game.dto;
 
 public class UsuarioRankingDTO {
     private String nombre;

@@ -1,8 +1,10 @@
 
-package com.miguel.higher_lower_game;
+package com.miguel.higher_lower_game.service;
 
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.miguel.higher_lower_game.model.Jugador;
+
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;

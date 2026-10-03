@@ -1,4 +1,4 @@
-package com.miguel.higher_lower_game;
+package com.miguel.higher_lower_game.config;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;

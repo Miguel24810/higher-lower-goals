@@ -1,4 +1,4 @@
-package com.miguel.higher_lower_game;
+package com.miguel.higher_lower_game.service;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;

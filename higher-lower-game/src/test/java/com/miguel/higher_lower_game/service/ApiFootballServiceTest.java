@@ -1,7 +1,10 @@
-package com.miguel.higher_lower_game;
+package com.miguel.higher_lower_game.service;
 
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.miguel.higher_lower_game.model.Jugador;
+import com.miguel.higher_lower_game.service.ApiFootballService;
+
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
 import org.springframework.http.HttpStatus;

@@ -1,10 +1,12 @@
-package com.miguel.higher_lower_game;
+package com.miguel.higher_lower_game.repository;
 
 import java.util.List;
 import java.util.Optional;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
+
+import com.miguel.higher_lower_game.model.Jugador;
 
 
 public interface JugadorRepository extends JpaRepository<Jugador, Long> {

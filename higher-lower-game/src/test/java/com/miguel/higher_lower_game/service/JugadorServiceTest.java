@@ -1,6 +1,9 @@
-package com.miguel.higher_lower_game;
+package com.miguel.higher_lower_game.service;
 
 import org.junit.jupiter.api.Test;
+
+import com.miguel.higher_lower_game.model.Jugador;
+import com.miguel.higher_lower_game.service.JugadorService;
 
 import static org.junit.jupiter.api.Assertions.*;
 

@@ -1,8 +1,17 @@
-package com.miguel.higher_lower_game;
+package com.miguel.higher_lower_game.controller;
 
 import org.springframework.web.bind.annotation.*;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.server.ResponseStatusException;
+
+import com.miguel.higher_lower_game.dto.ActualizarRecordDTO;
+import com.miguel.higher_lower_game.dto.UsuarioCredencialesDTO;
+import com.miguel.higher_lower_game.dto.UsuarioRankingDTO;
+import com.miguel.higher_lower_game.exception.CredencialesInvalidasException;
+import com.miguel.higher_lower_game.exception.UsuarioNoEncontradoException;
+import com.miguel.higher_lower_game.model.Usuario;
+import com.miguel.higher_lower_game.repository.UsuarioRepository;
+import com.miguel.higher_lower_game.security.JwtUtil;
 
 import java.util.ArrayList;
 import java.util.List;

@@ -1,4 +1,4 @@
-package com.miguel.higher_lower_game;
+package com.miguel.higher_lower_game.security;
 
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.security.Keys;

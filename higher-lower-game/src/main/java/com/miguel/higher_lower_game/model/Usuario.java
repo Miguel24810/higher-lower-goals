@@ -1,5 +1,5 @@
 
-package com.miguel.higher_lower_game;
+package com.miguel.higher_lower_game.model;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;

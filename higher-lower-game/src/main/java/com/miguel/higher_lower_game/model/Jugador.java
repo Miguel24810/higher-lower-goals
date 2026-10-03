@@ -1,4 +1,4 @@
-package com.miguel.higher_lower_game;
+package com.miguel.higher_lower_game.model;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;

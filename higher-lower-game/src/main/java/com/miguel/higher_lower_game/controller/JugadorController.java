@@ -1,4 +1,4 @@
-package com.miguel.higher_lower_game;
+package com.miguel.higher_lower_game.controller;
 
 import org.springframework.web.bind.annotation.*;
 import java.util.List;
@@ -7,6 +7,11 @@ import java.security.MessageDigest;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.server.ResponseStatusException;
+
+import com.miguel.higher_lower_game.model.Jugador;
+import com.miguel.higher_lower_game.repository.JugadorRepository;
+import com.miguel.higher_lower_game.service.JugadorService;
+
 import java.util.Map;
 @RestController
 @RequestMapping("/jugadores")
