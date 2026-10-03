@@ -13,13 +13,15 @@ import java.util.Map;
 public class JugadorController {
 
     private final JugadorRepository jugadorRepository;
+    private final JugadorService jugadorService;
 
     @Value("${admin.sync.key}")
     private String claveAdmin;
 
-    public JugadorController(JugadorRepository jugadorRepository) {
+    public JugadorController(JugadorRepository jugadorRepository, JugadorService jugadorService) {
         this.jugadorRepository = jugadorRepository;
-    }
+        this.jugadorService = jugadorService;
+}
     @GetMapping
     public List<Jugador> obtenerTodos() {
     return jugadorRepository.findAll();
@@ -48,25 +50,6 @@ public class JugadorController {
     Jugador elegido = jugadorRepository.findById(idElegido).get();
     Jugador otro = jugadorRepository.findById(idOtro).get();
 
-    int golesElegido;
-    int golesOtro;
-
-    if(categoria.equals("golesCarrera")){
-        golesElegido= elegido.getGolesCarrera();
-        golesOtro=otro.getGolesCarrera();
-    }else if(categoria.equals("golesTemporada")){
-        golesElegido= elegido.getGolesTemporada();
-        golesOtro=otro.getGolesTemporada();
-
-    }else if(categoria.equals("golesSeleccion")){
-        golesElegido=elegido.getGolesSeleccion();
-        golesOtro= otro.getGolesSeleccion();
-
-    } else {
-    throw new IllegalArgumentException("Categoría no válida: " + categoria);
-}
-
-    return golesElegido >= golesOtro;
-}
-
+ return jugadorService.comparar(elegido, otro, categoria);
+    }
 }

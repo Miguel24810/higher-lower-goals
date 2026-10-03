@@ -25,10 +25,11 @@ public class AdminController {
             throw new RuntimeException("No autorizado");
         }
 
-        // Aquí: la lógica de sincronización (la construimos en el siguiente paso)
-        int[] idsJugadores = {278,56,133609,1100,762}; // ejemplo, los iremos ampliando
+       
+        int[] idsJugadores = {278,56,133609,1100,762,1496,538,53,2472,744,754,756,521,619,931,1323,49,643,978,1460,1946,2937,629,631,636,2291,3033,174,8,184,508,9,153,328,1138,272}; 
 
         for (int idApi : idsJugadores) {
+            try{
             JsonNode datos = apiFootballService.obtenerDatosCrudos(idApi, 2024);
             Jugador jugadorNuevo = apiFootballService.crearJugadorDesdeJson(datos);
 
@@ -45,7 +46,10 @@ public class AdminController {
                 jugadorNuevo.setIdApiFootball(idApi);
                 jugadorRepository.save(jugadorNuevo);
             }
-        }
+            Thread.sleep(6500);
+        } catch(Exception e){
+            System.out.println("Fallo con el jugador "+ idApi +": "+ e.getMessage());
+        }}
         return "Sincronización completada";
     }
 
