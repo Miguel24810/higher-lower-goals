@@ -1,4 +1,6 @@
- let rachaActual = 0;
+const API_URL = 'https://higher-lower-goals.onrender.com';
+
+let rachaActual = 0;
 let categoriaElegida = '';
 let jugadorActual1 = null;
 let jugadorActual2 = null;
@@ -63,7 +65,7 @@ function iniciarTemporizador() {
 }
 
 function iniciarSesion(nombre, password) {
-    fetch('http://localhost:8081/usuarios/login', {
+    fetch(`${API_URL}/usuarios/login`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ nombre: nombre, password: password })
@@ -117,7 +119,7 @@ document.getElementById('btn-registro').addEventListener('click', function() {
         return;
     }
 
-    fetch('http://localhost:8081/usuarios/registro', {
+    fetch(`${API_URL}/usuarios/registro`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ nombre: nombre, password: password })
@@ -153,21 +155,18 @@ document.getElementById('btn-volver-categoria').addEventListener('click', functi
     limpiarEstadoJuego();
     document.getElementById('pantalla-juego').style.display = 'none';
     document.getElementById('pantalla-categoria').style.display = 'block';
-    
 });
 document.getElementById('btn-volver-login').addEventListener('click', function() {
     limpiarEstadoJuego();
     document.getElementById('pantalla-categoria').style.display = 'none';
     document.getElementById('pantalla-login').style.display = 'block';
-    localStorage.removeItem('token')
-    
-    
+    localStorage.removeItem('token');
 });
 
 document.getElementById('btn-jugador1').addEventListener('click', function() {
     detenerTemporizador();
     bloquearBotonesJugador(true);
-    fetch('http://localhost:8081/jugadores/comparar', {
+    fetch(`${API_URL}/jugadores/comparar`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
@@ -197,7 +196,7 @@ document.getElementById('btn-jugador1').addEventListener('click', function() {
 document.getElementById('btn-jugador2').addEventListener('click', function() {
     detenerTemporizador();
     bloquearBotonesJugador(true);
-    fetch('http://localhost:8081/jugadores/comparar', {
+    fetch(`${API_URL}/jugadores/comparar`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
@@ -227,7 +226,7 @@ document.getElementById('btn-jugador2').addEventListener('click', function() {
 function pedirNuevoPar() {
     detenerTemporizador();
     bloquearBotonesJugador(true);
-    fetch('http://localhost:8081/jugadores/random-pair')
+    fetch(`${API_URL}/jugadores/random-pair`)
         .then(response => response.json())
         .then(jugadores => {
             jugadorActual1 = jugadores[0];
@@ -253,7 +252,7 @@ function actualizarRecordVisual(usuario) {
 
 function guardarRecord() {
     const token = localStorage.getItem('token');
-    fetch('http://localhost:8081/usuarios/record', {
+    fetch(`${API_URL}/usuarios/record`, {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json',
@@ -269,7 +268,7 @@ function guardarRecord() {
 
 function consultarRecord() {
     const token = localStorage.getItem('token');
-    fetch('http://localhost:8081/usuarios/record', {
+    fetch(`${API_URL}/usuarios/record`, {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json',
@@ -281,10 +280,10 @@ function consultarRecord() {
     .then(usuario => {
         actualizarRecordVisual(usuario);
     });
-
 }
+
 document.getElementById('btn-ver-ranking').addEventListener('click', function() {
-    fetch('http://localhost:8081/usuarios/ranking')
+    fetch(`${API_URL}/usuarios/ranking`)
         .then(response => response.json())
         .then(usuarios => {
             usuariosRanking = usuarios;
@@ -344,7 +343,8 @@ document.getElementById('btn-ranking-siguiente').addEventListener('click', funct
     indiceCategoriaRanking = (indiceCategoriaRanking + 1) % categoriasRanking.length;
     renderizarRanking();
 });
-    document.getElementById('btn-volver-ranking').addEventListener('click', function() {
-        document.getElementById('pantalla-ranking').style.display = 'none';
-        document.getElementById('pantalla-categoria').style.display = 'block';
-    });
+
+document.getElementById('btn-volver-ranking').addEventListener('click', function() {
+    document.getElementById('pantalla-ranking').style.display = 'none';
+    document.getElementById('pantalla-categoria').style.display = 'block';
+});
