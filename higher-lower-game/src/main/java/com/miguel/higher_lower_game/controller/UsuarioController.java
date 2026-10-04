@@ -3,7 +3,7 @@ package com.miguel.higher_lower_game.controller;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.server.ResponseStatusException;
-
+import jakarta.validation.Valid;
 import com.miguel.higher_lower_game.dto.ActualizarRecordDTO;
 import com.miguel.higher_lower_game.dto.UsuarioCredencialesDTO;
 import com.miguel.higher_lower_game.dto.UsuarioRankingDTO;
@@ -33,7 +33,7 @@ public class UsuarioController {
     }
 
     @PostMapping("/registro")
-    public UsuarioRankingDTO registrar(@RequestBody UsuarioCredencialesDTO datosRegistro) {
+    public UsuarioRankingDTO registrar(@Valid @RequestBody UsuarioCredencialesDTO datosRegistro) {
         if (usuarioRepository.findByNombre(datosRegistro.nombre()) != null) {
             throw new ResponseStatusException(HttpStatus.CONFLICT, "El nombre de usuario ya está en uso.");
         }

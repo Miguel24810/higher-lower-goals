@@ -81,7 +81,6 @@ function iniciarSesion(nombre, password) {
         document.getElementById('pantalla-login').style.display = 'none';
         document.getElementById('pantalla-registro').style.display = 'none';
         document.getElementById('pantalla-categoria').style.display = 'block';
-        console.log('Login correcto, token:', token);
     })
     .catch(error => {
         document.getElementById('mensaje-error').textContent = error.message;
