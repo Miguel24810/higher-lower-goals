@@ -1,4 +1,3 @@
-# Who Has More? ⚽
 
 # Who Has More? ⚽
 
