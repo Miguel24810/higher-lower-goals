@@ -14,6 +14,12 @@ const categoriasRanking = [
     { id: 'golesSeleccion', nombre: 'Goles Selección Temporada 24/25', record: 'recordSeleccion' }
 ];
 
+const preguntasCategoria = {
+    golesCarrera: '¿Quién tiene más goles en la carrera?',
+    golesTemporada: '¿Quién tiene más goles en la temporada 24/25?',
+    golesSeleccion: '¿Quién tiene más goles con su selección?'
+};
+
 function limpiarEstadoJuego() {
     detenerTemporizador();
     rachaActual = 0;
@@ -109,12 +115,25 @@ document.getElementById('link-ir-registro').addEventListener('click', function(e
     document.getElementById('pantalla-registro').style.display = 'block';
 });
 document.getElementById('btn-registro').addEventListener('click', function() {
-    const nombre = document.getElementById('registro-nombre').value;
+    const nombre = document.getElementById('registro-nombre').value.trim();
     const password = document.getElementById('registro-password').value;
     const passwordConfirmar= document.getElementById('registro-password-confirmar').value;
+    const mensajeErrorRegistro = document.getElementById('mensaje-error-registro');
+
+    mensajeErrorRegistro.textContent = '';
+
+    if (nombre.length < 3 || nombre.length > 30) {
+        mensajeErrorRegistro.textContent = 'El nombre de usuario debe tener entre 3 y 30 caracteres';
+        return;
+    }
+
+    if (password.length < 8 || password.length > 64) {
+        mensajeErrorRegistro.textContent = 'La contraseña debe tener entre 8 y 64 caracteres';
+        return;
+    }
 
     if(password !== passwordConfirmar){
-        document.getElementById('mensaje-error-registro').textContent = 'Las contraseñas no coinciden';
+        mensajeErrorRegistro.textContent = 'Las contraseñas no coinciden';
         return;
     }
 
@@ -136,7 +155,7 @@ document.getElementById('btn-registro').addEventListener('click', function() {
         iniciarSesion(nombre, password);
     })
     .catch(error => {
-        document.getElementById('mensaje-error-registro').textContent = error.message;
+        mensajeErrorRegistro.textContent = error.message;
     });
 });
 
@@ -144,6 +163,7 @@ document.querySelectorAll('.btn-categoria').forEach(function(boton) {
     boton.addEventListener('click', function() {
         limpiarEstadoJuego();
         categoriaElegida = boton.dataset.categoria;
+        document.getElementById('pregunta-categoria').textContent = preguntasCategoria[categoriaElegida];
         pedirNuevoPar();
         consultarRecord();
         document.getElementById('pantalla-categoria').style.display = 'none';
